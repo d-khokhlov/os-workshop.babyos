@@ -1,2 +1,2 @@
-os-workshop.babyos
-==================
+BabyOS
+======
