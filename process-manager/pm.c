@@ -1,6 +1,4 @@
-//#include <stdio.h>
-
-void execute( char *executableName ) {
+void execute( char *executableName, int parameter ) {
 
     unsigned long newStackAddress = 0;
     unsigned long newCodeAddress = 0;
@@ -30,8 +28,11 @@ void execute( char *executableName ) {
         // Сохранить указатель базы стекового кадра
         push    bp
 
+        // Сохранить переданный параметр
+        mov     cx, parameter
+
         // Инициализировать стек для загружаемого процесса
-        mov     word ptr newStackAddress, 0xFFFF
+        mov     word ptr newStackAddress, 0xFFFE
         mov     word ptr newStackAddress + 2, ds
         mov     dx, sp
         lss     sp, newStackAddress
@@ -39,6 +40,9 @@ void execute( char *executableName ) {
         // Сохранить в стек загружаемого процесса указатель стека текущего процесса
         push    cs
         push    dx
+
+        // Передать параметр загружаемому процессу через его стек
+        push    cx
 
         // Загрузить файл в целевой сегмент
         mov     ah, 0x3F
@@ -54,8 +58,6 @@ void execute( char *executableName ) {
         mov     word ptr newCodeAddress, 0x0000
         mov     word ptr newCodeAddress + 2, ds
         call    dword ptr newCodeAddress
-
-    @restore:
 
         // Восстановить стек текущего процесса
         mov     bp, sp
@@ -75,7 +77,8 @@ void execute( char *executableName ) {
 }
 
 void main( int argc, char **argv ) {
-	//printf("%s\n", argv[ 1 ] );
+    //int parameter = 0;
+    //char filename = argv[ 1 ]
     //execute( argv[ 1 ] );
-    execute( "hw");
+    execute( "runstr", 2 );
 }
