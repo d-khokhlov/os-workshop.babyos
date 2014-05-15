@@ -1,3 +1,10 @@
+#include "clock.h"
+#include "process.h"
+
+#define MAX_PROCESSES_COUNT 10
+
+Process g_processes[ MAX_PROCESSES_COUNT ];
+
 void execute( char *executableName, int parameter ) {
 
     unsigned long newStackAddress = 0;
@@ -10,7 +17,7 @@ void execute( char *executableName, int parameter ) {
         mov     al, 10100000b
         mov     dx, executableName
         mov     cl, 0x00
-        int     21h
+        int     0x21
 
         // Сохранить дескриптор открытого файла
         mov     bx, ax
@@ -48,11 +55,11 @@ void execute( char *executableName, int parameter ) {
         mov     ah, 0x3F
         mov     cx, 0xFFFF
         mov     dx, 0x0000
-        int     21h
+        int     0x21
 
         // Закрыть файл
         mov     ah, 0x3E
-        int     21h
+        int     0x21
 
         // Передать управление загруженному процессу
         mov     word ptr newCodeAddress, 0x0000
@@ -76,9 +83,22 @@ void execute( char *executableName, int parameter ) {
     }
 }
 
+int chooseNextProcess() {
+    return 0;
+}
+
+void activateProcess( int id ) {
+
+}
+
 void main( int argc, char **argv ) {
     //int parameter = 0;
     //char filename = argv[ 1 ]
     //execute( argv[ 1 ] );
-    execute( "runstr", 2 );
+    //execute( "runstr", 2 );
+    initClock();
+    __asm {
+        mov     ah, 0x01
+        int     0x21
+    }
 }
