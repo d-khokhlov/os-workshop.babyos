@@ -100,8 +100,8 @@ WVList
 0
 25
 MItem
-21
-..\hello-world\hw.asm
+30
+..\examples\hello-world\hw.asm
 26
 WString
 6
