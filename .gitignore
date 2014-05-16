@@ -1,4 +1,16 @@
+# Watcom IDE
 /*.mk
-targets/*
-!targets/*.tgt
-actions/**/*.ima
+/targets/*
+!/targets/*.tgt
+
+# Automation tools
+/tools/images/
+
+# Sublime Text
+/*.sublime-workspace
+
+# Visual Studio
+/*.suo
+/*.user
+/*.opensdf
+/*.sdf
