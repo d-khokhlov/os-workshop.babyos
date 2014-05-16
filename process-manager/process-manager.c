@@ -2,8 +2,8 @@
 #include "process.h"
 
 #define MAX_PROCESSES_COUNT 10
-
 Process g_processes[ MAX_PROCESSES_COUNT ];
+ProcessId g_activeProcessId;
 
 void execute( char *executableName, int parameter ) {
 
@@ -83,8 +83,32 @@ void execute( char *executableName, int parameter ) {
     }
 }
 
-int chooseNextProcess() {
-    return 0;
+ProcessId getNextReady( ProcessId id ) {
+
+    ProcessId nextId = id;
+    do {
+
+        nextId++;
+        if ( nextId >= MAX_PROCESSES_COUNT ) {
+            nextId = 0;
+        }
+
+        if ( g_processes[ nextId ].state == PROCESS_STATE_READY ) {
+            return nextId;
+        }
+
+    } while ( nextId != id );
+
+    return PROCESS_ID_NONE;
+}
+
+ProcessId chooseProcessToActivate() {
+    ProcessId nextId = getNextReady( g_activeProcessId );
+    if ( nextId == PROCESS_ID_NONE ) {
+        return nextId;
+    } else {
+        return g_activeProcessId;
+    }
 }
 
 void activateProcess( int id ) {
