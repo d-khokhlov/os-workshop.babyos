@@ -2,7 +2,7 @@
 
                 .code
 
-start:
+_Start:
                 mov     bp, sp
                 mov     ax, [ bp + 4 ]
 
@@ -18,11 +18,11 @@ start:
                 mov     dx, 0
 
                 mov     cx, 0xFFFF
-beginLine:
+_BeginLine:
 
                 mov     di, ax
 
-printChar:
+_PrintChar:
                 mov     byte ptr es:di, dl
                 inc     dl
                 inc     di
@@ -32,10 +32,10 @@ printChar:
                 inc     di
 
                 cmp     di, bx
-                jb      printChar
+                jb      _PrintChar
 
-                loop    beginLine
+                loop    _BeginLine
 
                 retf
 
-                end     start
+                end     _Start

@@ -1,31 +1,36 @@
                 .model  tiny
 
-                extern  setIrqHandler : near
-                extern  oldHandler : dword
+                public  C InitClock
 
-                public  C initClock
+                extern  SetInterruptHandler : near
+                extern  GetInterruptHandler : near
 
                 .code
 
-initClock:
+InitClock:
 
                 push    ax
                 push    bx
                 push    cx
 
                 mov     bx, 0x0008
-                mov     ax, offset clockIrqHandler
+
+                call    GetInterruptHandler
+                mov     word ptr _pOldClockHandler, ax
+                mov     word ptr _pOldClockHandler + 2, cx
+
                 mov     cx, cs
-                call    setIrqHandler
+                mov     ax, offset _ClockHandler
+                call    SetInterruptHandler
 
                 pop     cx
                 pop     bx
                 pop     ax
                 ret
 
-; end of initClock
+; end of InitClock
 
-clockIrqHandler:
+_ClockHandler:
 
                 push    ax
                 push    es
@@ -39,9 +44,12 @@ clockIrqHandler:
 
                 pop     es
                 pop     ax
-                ;iret
-                jmp     cs:oldHandler
 
-; end of clockIrqHandler
+                jmp     [ cs:_pOldClockHandler ]
+
+; end of _ClockHandler
+
+_pOldClockHandler \
+                dd      ?
 
                 end

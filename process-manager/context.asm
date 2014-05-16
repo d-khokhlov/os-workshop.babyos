@@ -1,9 +1,9 @@
                 .model  tiny
 
-                extern  C g_processes : Process
+                ;extern  C g_processes : Process
 
                 .code
 
-saveContext:
+SaveContext:
 
                 end

@@ -1,18 +1,16 @@
                 .186
                 .model  tiny
 
-                public  setIrqHandler
-                public  oldHandler
+                public  SetInterruptHandler
+                public  GetInterruptHandler
 
                 .code
 
-                cli
-                hlt
-
-; bx - IRQ number
-; ax - handler offset
+; Input:
+; bx - interrupt number
 ; cx - handler segment
-setIrqHandler:
+; ax - handler offset
+SetInterruptHandler:
 
                 push    ds
 
@@ -21,24 +19,41 @@ setIrqHandler:
 
                 shl     bx, 2
 
-                push    word ptr [ bx ]
-                pop     cs:oldHandlerOff
-                push    word ptr [ bx + 2 ]
-                pop     cs:oldHandlerSeg
-
                 pushf
                 cli
                 mov     word ptr [ bx ], ax
                 mov     word ptr [ bx + 2 ], cx
                 popf
 
+                shr     bx, 2
+
                 pop     ds
                 ret
 
-; end of setIrqHandler
+; end of SetInterruptHandler
 
-oldHandler      label   dword
-oldHandlerOff   dw      ?
-oldHandlerSeg   dw      ?
+; Input:
+; bx - interrupt number
+; Output:
+; cx - handler segment
+; ax - handler offset
+GetInterruptHandler:
+
+                push    ds
+
+                push    word ptr 0x0000
+                pop     ds
+
+                shl     bx, 2
+
+                mov     ax, word ptr [ bx ]
+                mov     cx, word ptr [ bx + 2 ]
+
+                shr     bx, 2
+
+                pop     ds
+                ret
+
+; end of GetInterruptHandler
 
                 end

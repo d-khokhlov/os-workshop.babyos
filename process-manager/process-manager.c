@@ -1,11 +1,11 @@
 #include "clock.h"
 #include "process.h"
 
-#define MAX_PROCESSES_COUNT 10
-Process g_processes[ MAX_PROCESSES_COUNT ];
-ProcessId g_activeProcessId;
+#define _MAX_PROCESSES_COUNT 10
+Process _processes[ _MAX_PROCESSES_COUNT ];
+ProcessId _activeProcessId;
 
-void execute( char *executableName, int parameter ) {
+void _Execute( char *executableName, int parameter ) {
 
     unsigned long newStackAddress = 0;
     unsigned long newCodeAddress = 0;
@@ -83,44 +83,44 @@ void execute( char *executableName, int parameter ) {
     }
 }
 
-ProcessId getNextReady( ProcessId id ) {
+ProcessId _GetNextReadyProcess( ProcessId id ) {
 
     ProcessId nextId = id;
     do {
 
         nextId++;
-        if ( nextId >= MAX_PROCESSES_COUNT ) {
+        if ( nextId >= _MAX_PROCESSES_COUNT ) {
             nextId = 0;
         }
 
-        if ( g_processes[ nextId ].state == PROCESS_STATE_READY ) {
+        if ( _processes[ nextId ].state == ProcessState_Ready ) {
             return nextId;
         }
 
     } while ( nextId != id );
 
-    return PROCESS_ID_NONE;
+    return ProcessId_None;
 }
 
-ProcessId chooseProcessToActivate() {
-    ProcessId nextId = getNextReady( g_activeProcessId );
-    if ( nextId == PROCESS_ID_NONE ) {
+ProcessId _ChooseProcessToActivate() {
+    ProcessId nextId = _GetNextReadyProcess( _activeProcessId );
+    if ( nextId == ProcessId_None ) {
         return nextId;
     } else {
-        return g_activeProcessId;
+        return _activeProcessId;
     }
 }
 
-void activateProcess( int id ) {
+void _ActivateProcess( ProcessId id ) {
 
 }
 
-void main( int argc, char **argv ) {
+void main() {
     //int parameter = 0;
     //char filename = argv[ 1 ]
-    //execute( argv[ 1 ] );
-    //execute( "runstr", 2 );
-    initClock();
+    //_Execute( argv[ 1 ] );
+    //_Execute( "runstr", 2 );
+    InitClock();
     __asm {
         mov     ah, 0x01
         int     0x21

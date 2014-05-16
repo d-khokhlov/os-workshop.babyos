@@ -3,14 +3,14 @@
 #include "registers.h"
 
 typedef enum {
-    PROCESS_STATE_NULL,
-    PROCESS_STATE_READY,
-    PROCESS_STATE_ACTIVE,
-    PROCESS_STATE_BLOCKED,
+    ProcessState_Null,
+    ProcessState_Ready,
+    ProcessState_Active,
+    ProcessState_Blocked,
 } ProcessState;
 
 typedef int ProcessId;
-#define PROCESS_ID_NONE -1
+#define ProcessId_None -1
 
 typedef struct {
     ProcessState state;

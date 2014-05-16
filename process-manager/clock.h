@@ -1,3 +1,3 @@
 #pragma once
 
-void _cdecl initClock();
+void _cdecl InitClock();
