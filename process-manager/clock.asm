@@ -7,6 +7,8 @@
 
                 .code
 
+; No input
+; No output
 InitClock:
 
                 push    ax
@@ -30,6 +32,7 @@ InitClock:
 
 ; end of InitClock
 
+; Interrupt handler
 _ClockHandler:
 
                 push    ax

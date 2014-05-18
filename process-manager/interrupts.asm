@@ -7,9 +7,10 @@
                 .code
 
 ; Input:
-; bx - interrupt number
-; cx - handler segment
-; ax - handler offset
+;     bx - interrupt number
+;     cx - handler segment
+;     ax - handler offset
+; No output
 SetInterruptHandler:
 
                 push    ds
@@ -33,10 +34,10 @@ SetInterruptHandler:
 ; end of SetInterruptHandler
 
 ; Input:
-; bx - interrupt number
+;     bx - interrupt number
 ; Output:
-; cx - handler segment
-; ax - handler offset
+;     cx - handler segment
+;     ax - handler offset
 GetInterruptHandler:
 
                 push    ds
