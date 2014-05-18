@@ -8,7 +8,7 @@
 
 ; Ввод:
 ;     bx - номер прерывания
-;     cx:ax - адрес обрабокчика
+;     es:di - адрес обрабокчика
 ; Нет вывода
 SetInterruptHandler:
 
@@ -21,8 +21,8 @@ SetInterruptHandler:
 
                 pushf
                 cli
-                mov     word ptr [ bx ], ax
-                mov     word ptr [ bx + 2 ], cx
+                mov     word ptr [ bx ], di
+                mov     word ptr [ bx + 2 ], es
                 popf
 
                 shr     bx, 2
@@ -35,7 +35,7 @@ SetInterruptHandler:
 ; Вввод:
 ;     bx - номер прерывания
 ; Вывод:
-;     cx:ax - адрес обрабокчика
+;     es:di - адрес обрабокчика
 GetInterruptHandler:
 
                 push    ds
@@ -45,8 +45,8 @@ GetInterruptHandler:
 
                 shl     bx, 2
 
-                mov     ax, word ptr [ bx ]
-                mov     cx, word ptr [ bx + 2 ]
+                mov     di, word ptr [ bx ]
+                mov     es, word ptr [ bx + 2 ]
 
                 shr     bx, 2
 

@@ -11,23 +11,24 @@
 ; нет вывода
 InitClock:
 
-                push    ax
                 push    bx
-                push    cx
+                push    es
+                push    di
 
                 mov     bx, 0x0008
 
                 call    GetInterruptHandler
-                mov     word ptr _pOldClockHandler, ax
-                mov     word ptr _pOldClockHandler + 2, cx
+                mov     word ptr _pOldClockHandler, di
+                mov     word ptr _pOldClockHandler + 2, es
 
-                mov     cx, cs
-                mov     ax, offset _ClockHandler
+                mov     di, cs
+                mov     es, di
+                mov     di, offset _ClockHandler
                 call    SetInterruptHandler
 
-                pop     cx
+                pop     di
+                pop     es
                 pop     bx
-                pop     ax
                 ret
 
 ; конец InitClock
