@@ -7,8 +7,8 @@
 
                 .code
 
-; No input
-; No output
+; Нет ввода
+; нет вывода
 InitClock:
 
                 push    ax
@@ -30,9 +30,9 @@ InitClock:
                 pop     ax
                 ret
 
-; end of InitClock
+; конец InitClock
 
-; Interrupt handler
+; Обработчик прерывания
 _ClockHandler:
 
                 push    ax
@@ -50,7 +50,7 @@ _ClockHandler:
 
                 jmp     [ cs:_pOldClockHandler ]
 
-; end of _ClockHandler
+; конец _ClockHandler
 
 _pOldClockHandler \
                 dd      ?

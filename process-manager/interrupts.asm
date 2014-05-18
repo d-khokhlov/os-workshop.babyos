@@ -6,11 +6,10 @@
 
                 .code
 
-; Input:
-;     bx - interrupt number
-;     cx - handler segment
-;     ax - handler offset
-; No output
+; Ввод:
+;     bx - номер прерывания
+;     cx:ax - адрес обрабокчика
+; Нет вывода
 SetInterruptHandler:
 
                 push    ds
@@ -31,13 +30,12 @@ SetInterruptHandler:
                 pop     ds
                 ret
 
-; end of SetInterruptHandler
+; конец SetInterruptHandler
 
-; Input:
-;     bx - interrupt number
-; Output:
-;     cx - handler segment
-;     ax - handler offset
+; Вввод:
+;     bx - номер прерывания
+; Вывод:
+;     cx:ax - адрес обрабокчика
 GetInterruptHandler:
 
                 push    ds
@@ -55,6 +53,6 @@ GetInterruptHandler:
                 pop     ds
                 ret
 
-; end of GetInterruptHandler
+; конец GetInterruptHandler
 
                 end
