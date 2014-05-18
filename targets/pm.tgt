@@ -99,8 +99,8 @@ WVList
 0
 27
 MItem
-28
-..\process-manager\clock.asm
+30
+..\process-manager\clock86.asm
 28
 WString
 6
@@ -117,8 +117,8 @@ WVList
 0
 31
 MItem
-30
-..\process-manager\context.asm
+32
+..\process-manager\context86.asm
 32
 WString
 6
@@ -135,8 +135,8 @@ WVList
 0
 35
 MItem
-33
-..\process-manager\interrupts.asm
+35
+..\process-manager\interrupts86.asm
 36
 WString
 6
