@@ -1,5 +1,5 @@
-                .186
                 .model  tiny
+                .186
 
                 public  SetInterruptHandler
                 public  GetInterruptHandler

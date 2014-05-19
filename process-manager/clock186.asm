@@ -1,4 +1,5 @@
                 .model  tiny
+                .186
 
                 public  C InitClock
 

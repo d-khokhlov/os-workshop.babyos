@@ -7,7 +7,6 @@ ProcessId _activeProcessId;
 
 void _Execute( char *executableName, int parameter ) {
 
-    unsigned long newStackAddress = 0;
     unsigned long newCodeAddress = 0;
 
     __asm {
@@ -29,24 +28,24 @@ void _Execute( char *executableName, int parameter ) {
         // Инициализировать сегментные регистры данных для загружаемого процесса
         mov     ds, cx
         mov     es, cx
-        mov     fs, cx
-        mov     gs, cx
 
-        // Сохранить указатель базы стекового кадра
+        // Сохранить указатель базы стекового кадра текущего процесса
         push    bp
 
-        // Сохранить переданный параметр
+        // Забрать переданный параметр из стека, т.к. далее стек будет утерян
         mov     cx, parameter
 
-        // Инициализировать стек для загружаемого процесса
-        mov     word ptr newStackAddress, 0xFFFE
-        mov     word ptr newStackAddress + 2, ds
+        // Запомнить указатель стека текущего процесса
         mov     dx, sp
-        lss     sp, newStackAddress
 
-        // Сохранить в стек загружаемого процесса указатель стека текущего процесса
-        push    cs
+        // Инициализировать стек для загружаемого процесса
+        mov     ax, ds
+        mov     ss, ax
+        mov     sp, 0xFFFE
+
+        // Сохранить в стек загружаемого процесса адрес стека текущего процесса
         push    dx
+        push    cs
 
         // Передать параметр загружаемому процессу через его стек
         push    cx
@@ -67,8 +66,9 @@ void _Execute( char *executableName, int parameter ) {
         call    dword ptr newCodeAddress
 
         // Восстановить стек текущего процесса
-        mov     bp, sp
-        lss     sp, dword ptr [ bp ]
+        pop     ax
+        pop     sp
+        mov     ss, ax
 
         // Восстановить стековый кадр текущего процесса
         pop     bp
@@ -77,9 +77,6 @@ void _Execute( char *executableName, int parameter ) {
         mov     cx, cs
         mov     ds, cx
         mov     es, cx
-        mov     fs, cx
-        mov     gs, cx
-
     }
 }
 
