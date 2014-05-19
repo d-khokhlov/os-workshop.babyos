@@ -1,9 +1,21 @@
 #include "clock.h"
 #include "process.h"
+#include "registers.h"
 
 #define _MAX_PROCESSES_COUNT 10
 Process _processes[ _MAX_PROCESSES_COUNT ];
 ProcessId _activeProcessId;
+
+Registers *GetActiveProcessRegisters() {
+	return &( _processes[ _activeProcessId ].registers );
+}
+
+void ActivateProcess( ProcessId id ) {
+    if ( id != _activeProcessId ) {
+        _processes[ _activeProcessId ].state = ProcessState_Ready;
+        _processes[ id ].state = ProcessState_Active;
+    }
+}
 
 void _Execute( char *executableName, int parameter ) {
 
@@ -99,17 +111,13 @@ ProcessId _GetNextReadyProcess( ProcessId id ) {
     return ProcessId_None;
 }
 
-ProcessId _ChooseProcessToActivate() {
+ProcessId ChooseProcessToActivate() {
     ProcessId nextId = _GetNextReadyProcess( _activeProcessId );
     if ( nextId == ProcessId_None ) {
         return nextId;
     } else {
         return _activeProcessId;
     }
-}
-
-void _ActivateProcess( ProcessId id ) {
-
 }
 
 void main() {

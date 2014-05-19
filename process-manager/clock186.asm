@@ -3,14 +3,24 @@
 
                 public  C InitClock
 
+                extern  C HandleClockInterrupt : near
                 extern  SetInterruptHandler : near
                 extern  GetInterruptHandler : near
+                extern  SaveContext : near
+                extern  RestoreContext : near
+                extern  InitKernelContext : near
+                extern  LoadKernelContext : near
 
                 .code
 
 ; Нет ввода
 ; нет вывода
 InitClock:
+
+                ; HACK: стек ядра должен храниться без текущего адреса возврата
+                add     sp, 4
+                call    InitKernelContext
+                sub     sp, 4
 
                 push    bx
                 push    es
@@ -37,18 +47,19 @@ InitClock:
 ; Обработчик прерывания
 _ClockHandler:
 
-                push    ax
-                push    es
+                call    SaveContext
+                mov     _processSs, ss
+                mov     _processSp, sp
 
-                mov     ax, 0xB800
-                mov     es, ax
+                call    LoadKernelContext
 
-                mov     al, es:0x0001
-                inc     al
-                mov     es:0x0001, al
+                push    offset _processSp
+                push    offset _processSs
+                call    HandleClockInterrupt
 
-                pop     es
-                pop     ax
+                mov     sp, _processSp
+                mov     ss, _processSs
+                call    RestoreContext
 
                 jmp     [ cs:_pOldClockHandler ]
 
@@ -56,5 +67,8 @@ _ClockHandler:
 
 _pOldClockHandler \
                 dd      ?
+
+_processSp      dw      ?
+_processSs      dw      ?
 
                 end

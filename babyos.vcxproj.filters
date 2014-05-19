@@ -30,6 +30,15 @@
     <None Include="examples\runstr\runstr.asm">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="process-manager\clock186.asm">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="process-manager\context186.asm">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="process-manager\interrupts186.asm">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="process-manager\clock.h">
@@ -41,9 +50,18 @@
     <ClInclude Include="process-manager\registers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="process-manager\registers186.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="process-manager\process-manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="process-manager\process-manager.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="process-manager\clock.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

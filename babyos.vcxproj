@@ -67,15 +67,21 @@
     <None Include="examples\hello-world\hw.asm" />
     <None Include="examples\runstr\runstr.asm" />
     <None Include="process-manager\clock.asm" />
+    <None Include="process-manager\clock186.asm" />
     <None Include="process-manager\context.asm" />
+    <None Include="process-manager\context186.asm" />
     <None Include="process-manager\interrupts.asm" />
+    <None Include="process-manager\interrupts186.asm" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="process-manager\clock.h" />
+    <ClInclude Include="process-manager\process-manager.h" />
     <ClInclude Include="process-manager\process.h" />
     <ClInclude Include="process-manager\registers.h" />
+    <ClInclude Include="process-manager\registers186.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="process-manager\clock.c" />
     <ClCompile Include="process-manager\process-manager.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
