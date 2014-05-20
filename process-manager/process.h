@@ -2,7 +2,8 @@
 
 #include "registers.h"
 
-typedef enum {
+typedef enum ProcessState
+{
     ProcessState_Null,
     ProcessState_Ready,
     ProcessState_Active,
@@ -12,7 +13,8 @@ typedef enum {
 typedef int ProcessId;
 #define ProcessId_None -1
 
-typedef struct {
+typedef struct Process
+{
     ProcessState state;
     Registers registers;
     ProcessId parentId;

@@ -1,8 +1,8 @@
 #include "process.h"
 #include "process-manager.h"
 
-void _cdecl HandleClockInterrupt( SegmentRegister *ss, CommonRegister *sp ) {
-
+void _cdecl HandleClockInterrupt( SegmentRegister *ss, CommonRegister *sp )
+{
     Registers *pRegisters;
 
     pRegisters = GetActiveProcessRegisters();
