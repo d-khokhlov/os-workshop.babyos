@@ -24,9 +24,6 @@ _isClockHandled dw      0
 
 ; void _cdecl InitClock();
 InitClock:
-                call    DEBUG_PrintState
-                ret
-
                 push    bx
                 push    es
                 push    di
@@ -50,12 +47,7 @@ InitClock:
 
 ; Обработчик прерывания
 _ClockHandler:
-                ; DEBUG
-                cmp     word ptr cs:_isClockHandled, 1
-                je      @callOldHandler
-                mov     word ptr cs:_isClockHandled, 1
-                ; END DEBUG
-
+                call    DEBUG_PrintState
                 call    SaveContext
                 mov     [ cs:_processSs ], ss
                 mov     [ cs:_processSp ], sp
@@ -71,7 +63,6 @@ _ClockHandler:
                 mov     sp, _processSp
                 call    RestoreContext
 
-@callOldHandler: ; DEBUG LABEL
                 jmp     [ cs:_pOldClockHandler ]
 ; конец _ClockHandler
 

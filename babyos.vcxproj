@@ -66,7 +66,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="debug\debug.asm" />
+    <None Include="debug\debug186.asm" />
     <None Include="examples\hello-world\hw.asm" />
     <None Include="examples\runstr\runstr.asm" />
     <None Include="process-manager\clock.asm" />

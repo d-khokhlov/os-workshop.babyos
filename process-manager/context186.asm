@@ -8,6 +8,8 @@
                 public  LoadKernelContext
 
                 extern  C AllocateFarMemory : near
+                extern  DEBUG_PrintState : near
+                extern  DEBUG_Pause : near
 
                 .code
 
@@ -28,6 +30,9 @@ _returnOffset   dw      ?
 ;         Также не сохраняется ss и не гарантируется сохранение sp,
 ;         т.к. не имеет смысла сохранять адрес стека в этом же стеке.
 SaveContext:
+                call    DEBUG_PrintState
+                call    DEBUG_Pause
+
                 pop     [ cs:_returnOffset ]
                 pusha
                 push    ds

@@ -33,10 +33,10 @@
     <None Include="process-manager\interrupts186.asm">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="debug\debug.asm">
+    <None Include="process-manager\mocks186.asm">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="process-manager\mocks186.asm">
+    <None Include="debug\debug186.asm">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
