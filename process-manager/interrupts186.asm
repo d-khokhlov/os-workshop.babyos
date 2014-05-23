@@ -11,7 +11,6 @@
 ;     es:di - адрес обрабокчика
 ; Нет вывода
 SetInterruptHandler:
-
                 push    ds
 
                 push    word ptr 0x0000
@@ -29,7 +28,6 @@ SetInterruptHandler:
 
                 pop     ds
                 ret
-
 ; конец SetInterruptHandler
 
 ; Вввод:
@@ -37,7 +35,6 @@ SetInterruptHandler:
 ; Вывод:
 ;     es:di - адрес обрабокчика
 GetInterruptHandler:
-
                 push    ds
 
                 push    word ptr 0x0000
@@ -52,7 +49,6 @@ GetInterruptHandler:
 
                 pop     ds
                 ret
-
 ; конец GetInterruptHandler
 
                 end

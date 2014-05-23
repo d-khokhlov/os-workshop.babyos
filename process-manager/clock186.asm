@@ -8,19 +8,24 @@
                 extern  GetInterruptHandler : near
                 extern  SaveContext : near
                 extern  RestoreContext : near
-                extern  InitKernelContext : near
                 extern  LoadKernelContext : near
+
+                extern  DEBUG_PrintState : near
 
                 .code
 
-; Нет ввода
-; нет вывода
-InitClock:
+_pOldClockHandler \
+                dd      ?
 
-                ; HACK: стек ядра должен храниться без текущего адреса возврата
-                add     sp, 4
-                call    InitKernelContext
-                sub     sp, 4
+_processSp      dw      ?
+_processSs      dw      ?
+
+_isClockHandled dw      0
+
+; void _cdecl InitClock();
+InitClock:
+                call    DEBUG_PrintState
+                ret
 
                 push    bx
                 push    es
@@ -41,34 +46,33 @@ InitClock:
                 pop     es
                 pop     bx
                 ret
-
 ; конец InitClock
 
 ; Обработчик прерывания
 _ClockHandler:
+                ; DEBUG
+                cmp     word ptr cs:_isClockHandled, 1
+                je      @callOldHandler
+                mov     word ptr cs:_isClockHandled, 1
+                ; END DEBUG
 
                 call    SaveContext
-                mov     _processSs, ss
-                mov     _processSp, sp
+                mov     [ cs:_processSs ], ss
+                mov     [ cs:_processSp ], sp
 
                 call    LoadKernelContext
 
                 push    offset _processSp
                 push    offset _processSs
                 call    HandleClockInterrupt
+                add     sp, 4
 
-                mov     sp, _processSp
                 mov     ss, _processSs
+                mov     sp, _processSp
                 call    RestoreContext
 
+@callOldHandler: ; DEBUG LABEL
                 jmp     [ cs:_pOldClockHandler ]
-
 ; конец _ClockHandler
-
-_pOldClockHandler \
-                dd      ?
-
-_processSp      dw      ?
-_processSs      dw      ?
 
                 end

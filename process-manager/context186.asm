@@ -3,10 +3,21 @@
 
                 public  SaveContext
                 public  RestoreContext
-                public  InitKernelContext
+                public  C SaveNewContext
+                public  C InitKernelContext
                 public  LoadKernelContext
 
+                extern  C AllocateFarMemory : near
+
                 .code
+
+_KERNEL_STACK_SIZE \
+                equ     2048
+
+_kernelSs       dw      ?
+_kernelSp       dw      ?
+
+_returnOffset   dw      ?
 
 ; Нет ввода
 ; Вывод:
@@ -17,10 +28,11 @@
 ;         Также не сохраняется ss и не гарантируется сохранение sp,
 ;         т.к. не имеет смысла сохранять адрес стека в этом же стеке.
 SaveContext:
+                pop     [ cs:_returnOffset ]
                 pusha
                 push    ds
                 push    es
-                ret
+                jmp     [ cs:_returnOffset ]
 ; конец SaveContext
 
 ; Ввод:
@@ -29,36 +41,95 @@ SaveContext:
 ;     устанавливаются значения всех регистров (кроме cs, ip, flags, ss и sp,
 ;     см. описание SaveContext).
 RestoreContext:
+                pop     [ cs:_returnOffset ]
                 pop     es
                 pop     ds
                 popa
-                ret
+                jmp     [ cs:_returnOffset ]
 ; конец RestoreContext
+
+; CommonRegister _cdecl SaveNewContext(
+;     SegmentRegister cs, CommonRegister ip,
+;     SegmentRegister ss, CommonRegister sp,
+;     SegmentRegister ds, SegmentRegister es );
+SaveNewContext:
+                push    bp
+                mov     bp, sp
+                push    bx
+                push    cx
+                push    dx
+                push    si
+                push    di
+                push    ds
+                push    es
+
+                mov     bx, [ bp + 4 ]
+                mov     si, [ bp + 6 ]
+                mov     es, [ bp + 12 ]
+                mov     ds, [ bp + 14 ]
+                mov     ax, [ bp + 16 ]
+
+                mov     di, sp
+                mov     cx, ss
+
+                mov     dx, [ bp + 10 ]
+                and     dx, 0xFFFE
+                mov     ss, [ bp + 8 ]
+                mov     sp, dx
+
+                push    ax
+                pushf
+                push    bx
+                push    si
+                pusha
+                push    es
+                push    ds
+
+                mov     ax, sp
+
+                mov     ss, cx
+                mov     sp, di
+
+                pop     es
+                pop     ds
+                pop     di
+                pop     si
+                pop     dx
+                pop     cx
+                pop     bx
+                pop     bp
+                ret
+; конец SaveNewContext
 
 ; Нет ввода
 ; Нет вывода
 InitKernelContext:
-                mov     _kernelSp, sp
-                mov     _kernelBp, bp   ; когда будет ассемблерный загрузчик, сохранять и восстанавливать bp будет не нужно
+                push    word ptr 0
+                push    word ptr _KERNEL_STACK_SIZE
+                call    AllocateFarMemory
+                add     sp, 4
+                mov     _kernelSs, ax
+
+                mov     ax, _KERNEL_STACK_SIZE
+                and     ax, 0xFFFE
+                mov     _kernelSp, ax
+
                 ret
 ; конец InitKernelContext
 
 ; Нет ввода
 ; Вывод:
-;     восстанавливаются значения ds, es, ss, sp, bp
+;     восстанавливаются значения ds, es, ss, sp
 ; Изменяет:
 ;     ax
 LoadKernelContext:
+                pop     [ cs:_returnOffset ]
                 mov     ax, cs
                 mov     ds, ax
                 mov     es, ax
+                mov     ss, _kernelSs
                 mov     sp, _kernelSp
-                mov     bp, _kernelBp
-                mov     ss, ax
-                ret
+                jmp     [ cs:_returnOffset ]
 ; конец RestoreKernelContext
-
-_kernelSp       dw      ?
-_kernelBp       dw      ?
 
                 end

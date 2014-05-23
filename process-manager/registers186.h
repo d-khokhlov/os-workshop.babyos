@@ -11,4 +11,5 @@ typedef struct Registers
     CommonRegister bp, sp;
     FlagsRegister flags;
     SegmentRegister cs, ds, ss, es;
+    CommonRegister ip;
 } Registers;

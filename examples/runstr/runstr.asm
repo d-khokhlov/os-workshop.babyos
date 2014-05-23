@@ -18,11 +18,11 @@ _Start:
                 mov     dx, 0
 
                 mov     cx, 0xFFFF
-_BeginLine:
+@beginLine:
 
                 mov     di, ax
 
-_PrintChar:
+@printChar:
                 mov     byte ptr es:di, dl
                 inc     dl
                 inc     di
@@ -32,9 +32,9 @@ _PrintChar:
                 inc     di
 
                 cmp     di, bx
-                jb      _PrintChar
+                jb      @printChar
 
-                loop    _BeginLine
+                loop    @beginLine
 
                 retf
 

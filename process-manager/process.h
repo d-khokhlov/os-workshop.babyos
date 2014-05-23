@@ -13,9 +13,12 @@ typedef enum ProcessState
 typedef int ProcessId;
 #define ProcessId_None -1
 
+#define MAX_PROCESS_PARAMETERS_COUNT 1
+typedef int ProcessParameters[ MAX_PROCESS_PARAMETERS_COUNT ];
+
 typedef struct Process
 {
     ProcessState state;
     Registers registers;
-    ProcessId parentId;
+    ProcessParameters parameters;
 } Process;

@@ -1,13 +1,101 @@
+#include <io.h>
+#include <fcntl.h>
+#include "common.h"
 #include "clock.h"
 #include "process.h"
 #include "registers.h"
+#include "mocks.h"
+#include "context.h"
 
 #define _MAX_PROCESSES_COUNT 10
 Process _processes[ _MAX_PROCESSES_COUNT ];
 ProcessId _activeProcessId;
 
+#define DEFAULT_STACK_SIZE 2048
+
+void _InitProcessManager()
+{
+    int id;
+    for ( id = 0; id < _MAX_PROCESSES_COUNT; id++ ) {
+        _processes[ id ].state = ProcessState_Null;
+    }
+    _activeProcessId = ProcessId_None;
+}
+
+ProcessId _GetNextReadyProcess( ProcessId id )
+{
+    ProcessId nextId;
+
+    if ( id == ProcessId_None ) {
+        nextId = _MAX_PROCESSES_COUNT;
+    } else {
+        nextId = id;
+    }
+    do {
+
+        nextId++;
+        if ( nextId >= _MAX_PROCESSES_COUNT ) {
+            nextId = 0;
+        }
+
+        if ( _processes[ nextId ].state == ProcessState_Ready ) {
+            return nextId;
+        }
+
+    } while ( nextId != id );
+
+    return ProcessId_None;
+}
+
+ProcessId _GetFirstNullProcess()
+{
+    ProcessId id;
+    for ( id = 0; id < _MAX_PROCESSES_COUNT; id++ ) {
+        if ( _processes[ id ].state == ProcessState_Null ) {
+            return id;
+        }
+    }
+    return ProcessId_None;
+}
+
 ProcessId CreateProcess( char *executablePath, int parameter )
 {
+    int fileHandle;
+    NearMemorySize executableSize, segmentSize;
+    FarAddress entryPoint;
+    ProcessId id;
+    Process *pProcess;
+
+    id = _GetFirstNullProcess();
+    if ( id == ProcessId_None ) {
+        return ProcessId_None;
+    }
+    pProcess = &_processes[ id ];
+
+    fileHandle = open( executablePath, O_RDONLY | O_BINARY );
+
+    lseek( fileHandle, 0, SEEK_END );
+    executableSize = tell( fileHandle );
+    lseek( fileHandle, 0, SEEK_SET );
+
+    segmentSize = executableSize + DEFAULT_STACK_SIZE;
+    entryPoint.segment = AllocateFarMemory( segmentSize );
+    entryPoint.offset = 0;
+    FarReadFromFile( fileHandle, entryPoint, executableSize );
+
+    close( fileHandle );
+
+    pProcess->registers.cs = entryPoint.segment;
+    pProcess->registers.ip = entryPoint.offset;
+    pProcess->registers.ds = entryPoint.segment;
+    pProcess->registers.es = entryPoint.segment;
+    pProcess->registers.ss = entryPoint.segment;
+    pProcess->registers.sp = segmentSize - 1;
+    pProcess->parameters[ 0 ] = parameter;
+    InitProcessContext( pProcess );
+    pProcess->state = ProcessState_Ready;
+
+    return id;
 }
 
 ProcessId ChooseProcessToActivate()
@@ -23,17 +111,25 @@ ProcessId ChooseProcessToActivate()
 void ActivateProcess( ProcessId id )
 {
     if ( id != _activeProcessId ) {
-        _processes[ _activeProcessId ].state = ProcessState_Ready;
-        _processes[ id ].state = ProcessState_Active;
+        if ( _activeProcessId != ProcessId_None ) {
+            _processes[ _activeProcessId ].state = ProcessState_Ready;
+        }
+        if ( id != ProcessId_None ) {
+            _processes[ id ].state = ProcessState_Active;
+        }
     }
 }
 
 Registers *GetActiveProcessRegisters()
 {
-    return &( _processes[ _activeProcessId ].registers );
+    if ( _activeProcessId == ProcessId_None ) {
+        return NULL;
+    } else {
+        return &( _processes[ _activeProcessId ].registers );
+    }
 }
 
-void _Execute( char *executableName, int parameter )
+void _Execute( char *executablePath, int parameter )
 {
     unsigned long newCodeAddress = 0;
 
@@ -42,7 +138,7 @@ void _Execute( char *executableName, int parameter )
         // Открыть исполняемый файл на чтение
         mov     ah, 0x3D;
         mov     al, 10100000b;
-        mov     dx, executableName;
+        mov     dx, executablePath;
         mov     cl, 0x00;
         int     0x21;
 
@@ -95,8 +191,9 @@ void _Execute( char *executableName, int parameter )
 
         // Восстановить стек текущего процесса
         pop     ax;
-        pop     sp;
+        pop     bx;
         mov     ss, ax;
+        mov     sp, bx;
 
         // Восстановить стековый кадр текущего процесса
         pop     bp;
@@ -108,35 +205,16 @@ void _Execute( char *executableName, int parameter )
     }
 }
 
-ProcessId _GetNextReadyProcess( ProcessId id )
-{
-
-    ProcessId nextId = id;
-    do {
-
-        nextId++;
-        if ( nextId >= _MAX_PROCESSES_COUNT ) {
-            nextId = 0;
-        }
-
-        if ( _processes[ nextId ].state == ProcessState_Ready ) {
-            return nextId;
-        }
-
-    } while ( nextId != id );
-
-    return ProcessId_None;
-}
-
 void main()
 {
-    //int parameter = 0;
-    //char filename = argv[ 1 ]
-    //_Execute( argv[ 1 ] );
-    //_Execute( "runstr", 2 );
+    char c;
+
+    InitKernelContext();
+
+    _InitProcessManager();
+    CreateProcess( "runstr", 1 );
+
     InitClock();
-    __asm {
-        mov     ah, 0x01
-            int     0x21
-    }
+
+    read( STDIN_FILENO, &c, 1 );
 }

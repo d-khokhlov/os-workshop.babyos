@@ -18,12 +18,6 @@
     <None Include="process-manager\clock.asm">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="process-manager\context.asm">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="process-manager\interrupts.asm">
-      <Filter>Source Files</Filter>
-    </None>
     <None Include="examples\hello-world\hw.asm">
       <Filter>Source Files</Filter>
     </None>
@@ -37,6 +31,12 @@
       <Filter>Source Files</Filter>
     </None>
     <None Include="process-manager\interrupts186.asm">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="debug\debug.asm">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="process-manager\mocks186.asm">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
@@ -56,12 +56,27 @@
     <ClInclude Include="process-manager\process-manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="process-manager\mocks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="process-manager\mocks186.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="process-manager\context.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="process-manager\common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="process-manager\process-manager.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="process-manager\clock.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="process-manager\context.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
