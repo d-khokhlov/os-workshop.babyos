@@ -117,6 +117,7 @@ void ActivateProcess( ProcessId id )
         if ( id != ProcessId_None ) {
             _processes[ id ].state = ProcessState_Active;
         }
+        _activeProcessId = id;
     }
 }
 
