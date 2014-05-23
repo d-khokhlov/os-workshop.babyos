@@ -2,6 +2,7 @@
                 .186
 
                 public  DEBUG_PrintState
+                public  DEBUG_Pause
 
                 .code
 
@@ -33,11 +34,10 @@ _SET_FLAG_FORE_COLOR \
                 equ     0x0E
 _CLEARED_FLAG_FORE_COLOR \
                 equ     0x08
-_bulletLabel    db      '>>', 0
-_stackLabel     db      'stack', 0
 _valueForeColors \
                 db      _VALUE_FORE_COLOR_1, _VALUE_FORE_COLOR_2
 _flagForeColors db      _CLEARED_FLAG_FORE_COLOR, _SET_FLAG_FORE_COLOR
+_bulletLabel    db      '>>', 0
 
 _REGISTERS_COUNT \
                 equ     13 ; не считаем регистр флагов
@@ -65,6 +65,9 @@ DEBUG_PrintState:
                 push    ss ; для единообразия обработки
                 push    cs ; для единообразия обработки
 
+                mov     ax, cs
+                mov     ds, ax
+
                 mov     cx, _REGISTERS_COUNT + 1 ; флаги скопируем в общем цикле
                 mov     si, offset _registersTable + 2
                 mov     bp, sp
@@ -81,34 +84,6 @@ DEBUG_PrintState:
                 mov     ax, 0xB800
                 mov     es, ax
                 mov     di, _textBufferOffset
-
-                ; DEBUG
-                jmp     @skipDebug
-                mov     bh, 0x0F
-                mov     cx, 0x0100
-                mov     dx, 0x0000
-@nextWord:
-                mov     ax, dx
-                call    _PrintWordHex
-                mov     al, ' '
-                call    _PrintByteChar
-                add     dh, 2
-                inc     dl
-                loop    @nextWord
-                mov     si, offset _stackLabel
-                call    _PrintString
-                mov     si, offset _stackLabel
-                mov     byte ptr _stackLabel, 0
-                call    _PrintString
-                mov     si, offset _stackLabel
-                mov     byte ptr _stackLabel, '-'
-                call    _PrintString
-                mov     ax, 'ax'
-                call    _PrintWordChar
-                mov     ax, 0x686C
-                call    _PrintWordChar
-@skipDebug:
-                ; END DEBUG
 
                 mov     bh, _BULLET_COLOR
                 mov     si, offset _bulletLabel
@@ -138,7 +113,14 @@ DEBUG_PrintState:
                 popa
                 popf
                 ret
-; конец PrintState
+; конец DEBUG_PrintState
+
+; Нет ввода
+; Нет вывода
+DEBUG_Pause:
+                cli
+                hlt
+; конец DEBUG_Pause
 
 ; Ввод:
 ;     es:di - см. _PrintByteChar
