@@ -26,7 +26,7 @@ _Start:
                 inc     dl
                 inc     di
                 mov     byte ptr es:di, dh
-                inc     dh
+                add     dh, dl
                 and     dh, 0x0F
                 inc     di
 
