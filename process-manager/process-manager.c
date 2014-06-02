@@ -22,27 +22,34 @@ void _InitProcessManager()
     _activeProcessId = ProcessId_None;
 }
 
+ProcessId _GetNextProcessId( ProcessId id )
+{
+    if ( ( 0 <= id ) && ( id <= _MAX_PROCESSES_COUNT - 2 ) ) {
+        return id + 1;
+    } else {
+        return 0;
+    }
+}
+
 ProcessId _GetNextReadyProcess( ProcessId id )
 {
     ProcessId nextId;
 
     if ( id == ProcessId_None ) {
-        nextId = _MAX_PROCESSES_COUNT;
-    } else {
-        nextId = id;
-    }
-    do {
-
-        nextId++;
-        if ( nextId >= _MAX_PROCESSES_COUNT ) {
-            nextId = 0;
+        if ( _processes[ 0 ].state == ProcessState_Ready ) {
+            return 0;
         }
+        id = 0;
+    }
 
+    nextId = _GetNextProcessId( id );
+
+    while ( nextId != id ) {
         if ( _processes[ nextId ].state == ProcessState_Ready ) {
             return nextId;
         }
-
-    } while ( nextId != id );
+        nextId = _GetNextProcessId( nextId );
+    }
 
     return ProcessId_None;
 }
@@ -102,9 +109,9 @@ ProcessId ChooseProcessToActivate()
 {
     ProcessId nextId = _GetNextReadyProcess( _activeProcessId );
     if ( nextId == ProcessId_None ) {
-        return nextId;
-    } else {
         return _activeProcessId;
+    } else {
+        return nextId;
     }
 }
 
@@ -213,7 +220,12 @@ void main()
     InitKernelContext();
 
     _InitProcessManager();
-    CreateProcess( "runstr", 1 );
+    CreateProcess( "runstr", 10 );
+    CreateProcess( "runstr", 12 );
+    CreateProcess( "runstr", 14 );
+    CreateProcess( "runstr", 16 );
+    CreateProcess( "runstr", 18 );
+    CreateProcess( "runstr", 20 );
 
     InitClock();
 

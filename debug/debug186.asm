@@ -118,6 +118,7 @@ DEBUG_PrintState:
 ; Нет ввода
 ; Нет вывода
 DEBUG_Pause:
+                ; HACK: это не пауза, а полная остановка
                 cli
                 hlt
 ; конец DEBUG_Pause

@@ -10,8 +10,6 @@
                 extern  RestoreContext : near
                 extern  LoadKernelContext : near
 
-                extern  DEBUG_PrintState : near
-
                 .code
 
 _pOldClockHandler \
@@ -47,8 +45,8 @@ InitClock:
 
 ; Обработчик прерывания
 _ClockHandler:
-                call    DEBUG_PrintState
                 call    SaveContext
+
                 mov     [ cs:_processSs ], ss
                 mov     [ cs:_processSp ], sp
 
@@ -61,6 +59,7 @@ _ClockHandler:
 
                 mov     ss, _processSs
                 mov     sp, _processSp
+
                 call    RestoreContext
 
                 jmp     [ cs:_pOldClockHandler ]

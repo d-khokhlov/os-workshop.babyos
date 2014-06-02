@@ -8,8 +8,6 @@
                 public  LoadKernelContext
 
                 extern  C AllocateFarMemory : near
-                extern  DEBUG_PrintState : near
-                extern  DEBUG_Pause : near
 
                 .code
 
@@ -30,9 +28,6 @@ _returnOffset   dw      ?
 ;         Также не сохраняется ss и не гарантируется сохранение sp,
 ;         т.к. не имеет смысла сохранять адрес стека в этом же стеке.
 SaveContext:
-                call    DEBUG_PrintState
-                call    DEBUG_Pause
-
                 pop     [ cs:_returnOffset ]
                 pusha
                 push    ds
@@ -56,7 +51,8 @@ RestoreContext:
 ; CommonRegister _cdecl SaveNewContext(
 ;     SegmentRegister cs, CommonRegister ip,
 ;     SegmentRegister ss, CommonRegister sp,
-;     SegmentRegister ds, SegmentRegister es );
+;     SegmentRegister ds, SegmentRegister es,
+;     int parameter );
 SaveNewContext:
                 push    bp
                 mov     bp, sp
@@ -70,8 +66,8 @@ SaveNewContext:
 
                 mov     bx, [ bp + 4 ]
                 mov     si, [ bp + 6 ]
-                mov     es, [ bp + 12 ]
-                mov     ds, [ bp + 14 ]
+                mov     ds, [ bp + 12 ]
+                mov     es, [ bp + 14 ]
                 mov     ax, [ bp + 16 ]
 
                 mov     di, sp
@@ -87,8 +83,8 @@ SaveNewContext:
                 push    bx
                 push    si
                 pusha
-                push    es
                 push    ds
+                push    es
 
                 mov     ax, sp
 

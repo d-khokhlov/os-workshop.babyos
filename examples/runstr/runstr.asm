@@ -3,14 +3,13 @@
                 .code
 
 _Start:
-                mov     bp, sp
-                mov     ax, [ bp + 4 ]
+                pop     ax
 
-                mov     bx, 160
+                mov     bx, 80 * 2
                 mul     bx
 
                 mov     bx, ax
-                add     bx, 160
+                add     bx, 80 * 2
 
                 mov     cx, 0xB800
                 mov     es, cx
