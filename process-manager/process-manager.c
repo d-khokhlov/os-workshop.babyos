@@ -7,7 +7,7 @@
 #include "mocks.h"
 #include "context.h"
 
-#define _MAX_PROCESSES_COUNT 10
+#define _MAX_PROCESSES_COUNT 20
 Process _processes[ _MAX_PROCESSES_COUNT ];
 ProcessId _activeProcessId;
 
@@ -216,16 +216,15 @@ void _Execute( char *executablePath, int parameter )
 void main()
 {
     char c;
+    int i;
 
     InitKernelContext();
 
     _InitProcessManager();
-    CreateProcess( "randstr", 10 );
-    CreateProcess( "randstr", 12 );
-    CreateProcess( "randstr", 14 );
-    CreateProcess( "randstr", 16 );
-    CreateProcess( "randstr", 18 );
-    CreateProcess( "randstr", 20 );
+
+    for ( i = 0; i < 18; i++ ) {
+        CreateProcess( "randstr", i );
+    }
 
     InitClock();
 

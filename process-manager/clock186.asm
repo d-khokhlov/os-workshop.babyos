@@ -12,13 +12,11 @@
 
                 .code
 
-_pOldClockHandler \
-                dd      ?
+;_pOldClockHandler \
+;                dd      ?
 
 _processSp      dw      ?
 _processSs      dw      ?
-
-_isClockHandled dw      0
 
 ; void _cdecl InitClock();
 InitClock:
@@ -28,9 +26,9 @@ InitClock:
 
                 mov     bx, 0x0008
 
-                call    GetInterruptHandler
-                mov     word ptr _pOldClockHandler, di
-                mov     word ptr _pOldClockHandler + 2, es
+                ;call    GetInterruptHandler
+                ;mov     word ptr _pOldClockHandler, di
+                ;mov     word ptr _pOldClockHandler + 2, es
 
                 mov     di, cs
                 mov     es, di
@@ -50,6 +48,15 @@ _ClockHandler:
                 mov     [ cs:_processSs ], ss
                 mov     [ cs:_processSp ], sp
 
+                ; DEBUG
+                ;mov     ax, 0xB800
+                ;mov     ds, ax
+                ;mov     bx, 80 * 2 * 20
+                ;mov     al, [ bx ]
+                ;inc     al
+                ;mov     [ bx ], al
+                ; END DEBUG
+
                 call    LoadKernelContext
 
                 push    offset _processSp
@@ -60,9 +67,13 @@ _ClockHandler:
                 mov     ss, _processSs
                 mov     sp, _processSp
 
+                mov     al, 0x20
+                out     0x20, al
+
                 call    RestoreContext
 
-                jmp     [ cs:_pOldClockHandler ]
+                iret
+                ;jmp     [ cs:_pOldClockHandler ]
 ; конец _ClockHandler
 
                 end
