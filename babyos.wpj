@@ -27,8 +27,8 @@ WFileName
 targets\hw.tgt
 7
 WFileName
-18
-targets\runstr.tgt
+19
+targets\randstr.tgt
 8
 WVList
 3
@@ -76,8 +76,8 @@ WRect
 0
 17
 WFileName
-18
-targets\runstr.tgt
+19
+targets\randstr.tgt
 0
 1
 15

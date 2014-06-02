@@ -21,12 +21,12 @@ MCommand
 0
 5
 MCommand
-30
-move /y runstr.com runstr >nul
+32
+move /y randstr.com randstr >nul
 6
 MItem
-10
-runstr.com
+11
+randstr.com
 7
 WString
 3
@@ -100,8 +100,8 @@ WVList
 0
 25
 MItem
-29
-..\examples\runstr\runstr.asm
+31
+..\examples\randstr\randstr.asm
 26
 WString
 6

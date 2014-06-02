@@ -220,12 +220,12 @@ void main()
     InitKernelContext();
 
     _InitProcessManager();
-    CreateProcess( "runstr", 10 );
-    CreateProcess( "runstr", 12 );
-    CreateProcess( "runstr", 14 );
-    CreateProcess( "runstr", 16 );
-    CreateProcess( "runstr", 18 );
-    CreateProcess( "runstr", 20 );
+    CreateProcess( "randstr", 10 );
+    CreateProcess( "randstr", 12 );
+    CreateProcess( "randstr", 14 );
+    CreateProcess( "randstr", 16 );
+    CreateProcess( "randstr", 18 );
+    CreateProcess( "randstr", 20 );
 
     InitClock();
 
