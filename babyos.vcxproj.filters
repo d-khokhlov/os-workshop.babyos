@@ -21,9 +21,6 @@
     <None Include="examples\hello-world\hw.asm">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="examples\runstr\runstr.asm">
-      <Filter>Source Files</Filter>
-    </None>
     <None Include="process-manager\clock186.asm">
       <Filter>Source Files</Filter>
     </None>
@@ -37,6 +34,12 @@
       <Filter>Source Files</Filter>
     </None>
     <None Include="debug\debug186.asm">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="examples\worm\worm.asm">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="examples\randstr\randstr.asm">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>

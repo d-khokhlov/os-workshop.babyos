@@ -68,7 +68,8 @@
   <ItemGroup>
     <None Include="debug\debug186.asm" />
     <None Include="examples\hello-world\hw.asm" />
-    <None Include="examples\runstr\runstr.asm" />
+    <None Include="examples\randstr\randstr.asm" />
+    <None Include="examples\worm\worm.asm" />
     <None Include="process-manager\clock.asm" />
     <None Include="process-manager\clock186.asm" />
     <None Include="process-manager\context186.asm" />
