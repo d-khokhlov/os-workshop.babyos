@@ -5,170 +5,232 @@
 
                 .model tiny
                 .code
-                .186                            ; для команды push 0A00h
+                .186
 
-start:
-                mov     ax,cs                   ; текущий сегментный адрес плюс
-                add     ax,1000h                ; 1000h = следующий сегмент,
-                mov     ds,ax                   ; который будет использоваться
-                                                ; для адресов головы и хвоста
-                push     0A000h                 ; 0A000h - сегментный адрес
-                pop     es                      ; видеопамяти (в ES)
-                mov     ax,13h                  ; графический режим 13h
-                int     10h
+POINT_SIZE      equ     2
+SCREEN_WIDTH    equ     80
+SCREEN_HEIGHT   equ     25
 
-                mov     di,320*200
-                mov     cx,600h                 ; заполнить часть видеопамяти,
-                                                ; остающуюся за пределами
-                rep     stosb                   ; экрана, ненулевыми значениями
-                                                ; (чтобы питон не смог выйти за
-                                                ; пределы экрана)
-                xor     si,si                   ; начальный адрес хвоста в DS:SI
-                mov     bp,10                   ; начальная длина питона - 10
-                jmp     init_food               ; создать первую еду
-main_cycle:
-; использование регистров в этой программе:
-; AX - различное
-; BX - адрес головы, хвоста или еды на экране
-; CX - 0 (старшее слово числа микросекунд для функции задержки)
-; DX - не используется (модифицируется процедурой random)
-; DS - сегмент данных программы (следующий после сегмента кода)
-; ES - видеопамять
-; DS:DI - адрес головы
-; DS:SI - адрес хвоста
-; BP - добавочная длина (питон растет, пока BP > 0, BP уменьшается на каждом шаге,
-; пока не станет нулем)
+MOVE_UP         equ     -SCREEN_WIDTH * POINT_SIZE
+MOVE_DOWN       equ     SCREEN_WIDTH * POINT_SIZE
+MOVE_LEFT       equ     -POINT_SIZE
+MOVE_RIGHT      equ     POINT_SIZE
 
-                mov     dx,20000                ; пауза - 20 000 микросекунд
-                mov     ah,86h                  ; (CX = 0 после REP STOSB и
-                                                ; больше не меняется)
-                int     15h                     ; задержка
+FOOD_POINT      equ     '$' + 0x0A00
+BODY_POINT      equ     '*' + 0x0F00
+HEAD_POINT      equ     '@' + 0x0E00
+WALL_POINT      equ     0x06DB
+EMPTY_POINT     equ     ' ' + 0x0000
 
-                mov     ah,1                    ; проверка состояния клавиатуры
-                int     16h
-                jz      short no_keypress       ; если клавиша не нажата -
-                xor     ah,ah                   ; AH = 0 - считать скан-код
-                int     16h                     ; нажатой клавиши в AH,
-                cmp     ah,48h                  ; если это стрелка вверх,
-                jne     short not_up
-                mov     word ptr cs:move_direction,-320 ; изменить
-                                                ; направление движения на "вверх",
-not_up:
-                cmp     ah,50h                  ; если это стрелка вниз,
-                jne     short not_down
-                mov     word ptr cs:move_direction,320 ; изменить
-                                                ; направление движения на "вниз",
-not_down:
-                cmp     ah,4Bh                  ; если это стрелка влево,
-                jne     short not_left
-                mov     word ptr cs:move_direction,-1 ; изменить
-                                                ; направление движения на "влево",
-not_left:
-                cmp     ah,4Dh                  ; если это стрелка вправо,
-                jne     short no_keypress
-                mov     word ptr cs:move_direction,1 ; изменить
-                                                ; направление движения на "вправо",
-no_keypress:
-                and     bp,bp                   ; если питон растет (BP > 0),
-                jnz     short advance_head      ; пропустить стирание хвоста,
-                lodsw                           ; иначе: считать адрес хвоста из
-                                                ; DS:SI в AX и увеличить SI на 2
-                xchg    bx,ax
-                mov     byte ptr es:[bx],0      ; стереть хвост на экране,
-                mov     bx,ax
-                inc     bp                      ; увеличить BP, чтобы следующая
-                                                ; команда вернула его в 0,
-advance_head:
-                dec     bp                      ; уменьшить BP, так как питон
-                                                ; вырос на 1, если стирание
-                                                ; хвоста было пропущено, или
-                                                ; чтобы вернуть его в 0 - в
-                                                ; другом случае
-                add     bx,word ptr cs:move_direction
-                                                ; bx = следующая координата головы
-                mov     al,es:[bx]              ; проверить содержимое экрана в точке с
-                                                ; этой координатой,
-                and     al,al                   ; если там ничего нет,
-                jz      short move_worm         ; передвинуть голову,
-                cmp     al,0Dh                  ; если там еда,
-                je      short grow_worm         ; увеличить длину питона,
-                mov     ax,3                    ; иначе - питон умер,
-                int     10h                     ; перейти в текстовый режим
-                retn                            ; и завершить программу
+START_BODY_SIZE equ     4
+MAX_BODY_SIZE   equ     128
+BODY_INDEX_MASK equ     MAX_BODY_SIZE - 1
+BODY_GROWTH_ON_EAT \
+                equ     2
 
-move_worm:
-                mov     [di],bx                 ; поместить адрес головы в DS:DI
-                inc     di
-                inc     di                      ; и увеличить DI на 2,
-                mov     byte ptr es:[bx],09     ; вывести точку на экран,
-                cmp     byte ptr cs:eaten_food,1; если предыдущим
-                                                ; ходом была съедена еда,
-                je      if_eaten_food           ; создать новую еду,
-                jmp     short main_cycle        ; иначе - продолжить основной
-                                                ; цикл
+_Start:
+                mov     ah, 0
+                int     0x1A
+                mov     _seed, dx
 
-grow_worm:
-                push    bx                      ; сохранить адрес головы
-                mov     bx,word ptr cs:food_at  ; bx - адрес еды
-                xor     ax,ax                   ; AX = 0
-                call    draw_food               ; стереть еду
-                call    random                  ; AX - случайное число
-                and     ax,3Fh                  ; AX - случайное число от 0 до 63
-                mov     bp,ax                   ; это число будет добавкой к
-                                                ; длине питона
-                mov     byte ptr cs:eaten_food,1; установить флаг
-                                                ; для генерации еды на следующем ходе
-                pop     bx                      ; восстановить адрес головы BX
-                jmp     short move_worm         ; перейти к движению питона
+                push    0xB800
+                pop     es
 
-if_eaten_food:                                  ; переход сюда, если еда была съедена
-                mov     byte ptr cs:eaten_food,0; восстановить флаг
-init_food:                                      ; переход сюда в самом начале
-                push       bx                   ; сохранить адрес головы
-make_food:
-                call    random                  ; AX - случайное число
-                and     ax,0FFFEh               ; AX - случайное четное число
-                mov     bx,ax                   ; BX - новый адрес для еды
-                xor     ax,ax
-                cmp     word ptr es:[bx],ax     ; если по этому адресу
-                                                ; находится тело питона
-                jne     make_food               ; еще раз сгенерировать случайный адрес
-                cmp     word ptr es:[bx+320],ax ; если на строку ниже
-                                                ; находится тело питона
-                jne     make_food               ; то же самое
-                mov     word ptr cs:food_at,bx  ; поместить новый адрес
-                                                ; еды в food_at,
-                mov     ax,0D0Dh                ; цвет еды в AX
-                call    draw_food               ; нарисовать еду на экране
-                pop     bx
-                jmp     main_cycle
+                call    _InitScreen
+                call    _CreateFood
 
+                call    _RandomEmptyOffset
+                mov     _body[ 0 ], di
 
-; процедура draw_food
-; изображает четыре точки на экране - две по адресу BX и две на следующей
-; строке. Цвет первой точки из пары - AL, второй - AH
-draw_food:
-                mov     es:[bx],ax
-                mov     word ptr es:[bx+320],ax
-                retn
+                mov     bp, START_BODY_SIZE - 1
 
+@mainCycle:
+                mov     dx, 0
+                mov     cx, 2
+                mov     ah, 0x86
+                int     0x15
 
-; генерация случайного числа
-; возвращает число в AX, модифицирует DX
-random:
-                mov     ax,word ptr cs:seed
-                mov     dx,8E45h
+                mov     ah, 1
+                int     0x16
+                jz      @checkBodyGrowing
+
+                mov     ah, 0
+                int     0x16
+
+@checkUpPressed:
+                cmp     ah, 0x48
+                jne     @checkDownPressed
+                mov     word ptr _moveDirection, MOVE_UP
+
+@checkDownPressed:
+                cmp     ah, 0x50
+                jne     @checkLeftPressed
+                mov     word ptr _moveDirection, MOVE_DOWN
+
+@checkLeftPressed:
+                cmp     ah, 0x4B
+                jne     @checkRightPressed
+                mov     word ptr _moveDirection, MOVE_LEFT
+
+@checkRightPressed:
+                cmp     ah, 0x4D
+                jne     @checkBodyGrowing
+                mov     word ptr _moveDirection, MOVE_RIGHT
+
+@checkBodyGrowing:
+                cmp     bp, 0
+                je      @eraseTail
+                dec     bp
+                jmp     @advanceHead
+
+@eraseTail:
+                mov     bx, _tailIndex
+                call    _GetBodyElement
+                mov     word ptr es:di, EMPTY_POINT
+                call    _GetNextBodyIndex
+                mov     _tailIndex, bx
+
+@advanceHead:
+                mov     bx, _headIndex
+                call    _GetBodyElement
+                mov     word ptr es:di, BODY_POINT
+
+                call    _GetNextBodyIndex
+                mov     _headIndex, bx
+
+                add     di, _moveDirection
+                call    _SetBodyElement
+
+                mov     ax, es:di
+                mov     word ptr es:di, HEAD_POINT
+
+                cmp     ax, EMPTY_POINT
+                je      @endMainCycle
+
+                cmp     ax, FOOD_POINT
+                je      @eatFood
+
+                retf
+
+@eatFood:
+                call    _CreateFood
+                mov     bp, BODY_GROWTH_ON_EAT
+
+@endMainCycle:
+                jmp     @mainCycle
+
+; Ввод:
+;     es - сегмент видеопамяти
+; Нет вывода
+; Изменяет:
+;     ax, cx, di
+_InitScreen:
+                cld
+
+                mov     ax, WALL_POINT
+                mov     cx, SCREEN_WIDTH
+                mov     di, 0
+                rep stosw
+
+                mov     ax, EMPTY_POINT
+                mov     cx, SCREEN_WIDTH * ( SCREEN_HEIGHT - 2 )
+                rep stosw
+
+                mov     ax, WALL_POINT
+                mov     cx, SCREEN_WIDTH
+                rep stosw
+
+                mov     cx, SCREEN_HEIGHT - 2
+                mov     di, SCREEN_WIDTH * POINT_SIZE
+
+@drawVerticalWalls:
+                stosw
+                add     di, ( SCREEN_WIDTH - 2 ) * POINT_SIZE
+                stosw
+                loop    @drawVerticalWalls
+
+                ret
+
+; Ввод:
+;     es - сегмент видеопамяти
+; Нет вывода
+; Изменяет:
+;     ax, dx, di
+_CreateFood:
+                call    _RandomEmptyOffset
+                mov     word ptr es:di, FOOD_POINT
+                ret
+
+; Ввод:
+;     bx - исходный индекс в массиве тела
+; Вывод:
+;     bx - следующий индекс
+_GetNextBodyIndex:
+                inc     bx
+                and     bx, BODY_INDEX_MASK
+                ret
+
+; Ввод:
+;     bx - индекс в массиве тела
+; Вывод:
+;     di - элемент тела с заданным индексом
+; Изменяет:
+;     si
+_GetBodyElement:
+                mov     si, bx
+                shl     si, 1
+                add     si, offset _body
+                mov     di, [ si ]
+                ret
+
+; Ввод:
+;     bx - индекс в массиве тела
+;     di - новый элемент тела для данного индекса
+; Нет вывода
+; Изменяет:
+;     si
+_SetBodyElement:
+                mov     si, bx
+                shl     si, 1
+                add     si, offset _body
+                mov     [ si ], di
+                ret
+
+; Ввод:
+;     es - сегмент видеопамяти
+; Вывод:
+;     di - смещение случайной пустой точки на экране
+; Изменяет:
+;     ax, dx
+_RandomEmptyOffset:
+                call    _Random
+                cmp     ax, SCREEN_WIDTH * SCREEN_HEIGHT * POINT_SIZE
+                jae     _RandomEmptyOffset
+
+                mov     di, ax
+                mov     ax, es:di
+                cmp     ax, EMPTY_POINT
+                jne     _RandomEmptyOffset
+
+                ret
+
+; Нет ввода
+; Вывод:
+;     ax - случайное число
+; Изменяет:
+;     dx
+_Random:
+                mov     ax, _seed
+                mov     dx, 8E45h
                 mul     dx
                 inc     ax
-                mov     cs:word ptr seed,ax
-                retn
+                mov     _seed, ax
+                ret
 
-; переменные
+_moveDirection  dw      MOVE_RIGHT
+_headIndex      dw      0
+_tailIndex      dw      0
+_seed           dw      ?
+_body           dw      MAX_BODY_SIZE dup( ? )
 
-eaten_food      db      0
-move_direction  dw      1       ; направление движения: 1 - вправо,
-                                ; -1 - влево, 320 - вниз, -320 - вверх
-seed:                           ; это число хранится за концом, программы
-food_at         equ     seed+2  ; а это - за предыдущим
-
-                end     start
+                end     _Start

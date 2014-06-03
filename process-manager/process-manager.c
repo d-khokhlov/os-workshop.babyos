@@ -222,9 +222,10 @@ void main()
 
     _InitProcessManager();
 
-    for ( i = 0; i < 18; i++ ) {
+    for ( i = 0; i < 2; i++ ) {
         CreateProcess( "randstr", i );
     }
+    CreateProcess( "worm", 0 );
 
     InitClock();
 
