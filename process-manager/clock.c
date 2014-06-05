@@ -2,7 +2,7 @@
 #include "process-manager.h"
 #include "common.h"
 
-void _cdecl HandleClockInterrupt( SegmentRegister *ss, CommonRegister *sp )
+void public HandleClockInterrupt( SegmentRegister *ss, CommonRegister *sp )
 {
     Registers *pRegisters;
 

@@ -75,6 +75,7 @@
     <None Include="process-manager\context186.asm" />
     <None Include="process-manager\interrupts186.asm" />
     <None Include="process-manager\mocks186.asm" />
+    <None Include="process-manager\syscalls.asm" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="process-manager\common.h" />
@@ -86,6 +87,7 @@
     <ClInclude Include="process-manager\process.h" />
     <ClInclude Include="process-manager\registers.h" />
     <ClInclude Include="process-manager\registers186.h" />
+    <ClInclude Include="process-manager\syscalls.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="process-manager\clock.c" />

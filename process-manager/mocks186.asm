@@ -6,7 +6,7 @@
 
                 .code
 
-; SegmentAddress _cdecl AllocateFarMemory( FarMemorySize size );
+; SegmentAddress public AllocateFarMemory( FarMemorySize size );
 AllocateFarMemory:
                 push    bp
                 mov     bp, sp
@@ -33,7 +33,7 @@ AllocateFarMemory:
                 ret
 ; конец AllocateFarMemory
 
-; NearMemorySize _cdecl FarReadFromFile( int handle, FarAddress buffer,
+; NearMemorySize public FarReadFromFile( int handle, FarAddress buffer,
 ;     NearMemorySize count );
 FarReadFromFile:
                 push    bp

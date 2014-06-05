@@ -42,6 +42,9 @@
     <None Include="examples\randstr\randstr.asm">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="process-manager\syscalls.asm">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="process-manager\clock.h">
@@ -69,6 +72,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="process-manager\common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="process-manager\syscalls.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

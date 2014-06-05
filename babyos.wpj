@@ -51,7 +51,7 @@ WFileName
 14
 targets\pm.tgt
 0
-0
+6
 13
 VComponent
 14
@@ -88,8 +88,8 @@ targets\randstr.tgt
 VComponent
 20
 WRect
-90
-455
+213
+208
 5690
 4295
 0
@@ -100,4 +100,4 @@ WFileName
 targets\worm.tgt
 0
 1
-19
+10

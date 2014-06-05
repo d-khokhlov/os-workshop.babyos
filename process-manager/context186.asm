@@ -48,7 +48,7 @@ RestoreContext:
                 jmp     [ cs:_returnOffset ]
 ; конец RestoreContext
 
-; CommonRegister _cdecl SaveNewContext(
+; CommonRegister public SaveNewContext(
 ;     SegmentRegister cs, CommonRegister ip,
 ;     SegmentRegister ss, CommonRegister sp,
 ;     SegmentRegister ds, SegmentRegister es,

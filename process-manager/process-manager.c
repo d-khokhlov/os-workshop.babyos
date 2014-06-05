@@ -6,6 +6,7 @@
 #include "registers.h"
 #include "mocks.h"
 #include "context.h"
+#include "syscalls.h"
 
 #define _MAX_PROCESSES_COUNT 20
 Process _processes[ _MAX_PROCESSES_COUNT ];
@@ -65,7 +66,7 @@ ProcessId _GetFirstNullProcess()
     return ProcessId_None;
 }
 
-ProcessId CreateProcess( char *executablePath, int parameter )
+ProcessId syscall CreateProcess( char *executablePath, int parameter )
 {
     int fileHandle;
     NearMemorySize executableSize, segmentSize;
@@ -219,7 +220,7 @@ void main()
     int i;
 
     InitKernelContext();
-
+    InitSyscalls();
     _InitProcessManager();
 
     for ( i = 0; i < 2; i++ ) {

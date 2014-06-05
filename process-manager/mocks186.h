@@ -1,6 +1,7 @@
 #pragma once
 
 #include <io.h>
+#include "common.h"
 #include "registers186.h"
 
 typedef SegmentRegister SegmentAddress;
@@ -14,6 +15,6 @@ typedef struct FarAddress
     SegmentAddress segment;
 } FarAddress;
 
-SegmentAddress _cdecl AllocateFarMemory( FarMemorySize size );
-NearMemorySize _cdecl FarReadFromFile( int handle, FarAddress buffer,
+SegmentAddress public AllocateFarMemory( FarMemorySize size );
+NearMemorySize public FarReadFromFile( int handle, FarAddress buffer,
     NearMemorySize count );

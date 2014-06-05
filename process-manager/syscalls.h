@@ -2,4 +2,4 @@
 
 #include "common.h"
 
-void public InitClock();
+void public InitSyscalls();

@@ -18,7 +18,7 @@
 _processSp      dw      ?
 _processSs      dw      ?
 
-; void _cdecl InitClock();
+; void public InitClock();
 InitClock:
                 push    bx
                 push    es
