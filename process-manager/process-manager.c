@@ -223,8 +223,8 @@ void main()
     InitSyscalls();
     _InitProcessManager();
 
-    for ( i = 0; i < 2; i++ ) {
-        CreateProcess( "randstr", i );
+    for ( i = 0; i < 1; i++ ) {
+        CreateProcess( "randstr", 24 - i );
     }
     CreateProcess( "worm", 0 );
 

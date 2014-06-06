@@ -12,6 +12,13 @@
 
                 .code
 
+_TIMER_FREQUENCY_HZ \
+                equ     1193180
+_TIME_QUANTUM_MS \
+                equ     1
+_TIMER_COUNTER_START_VALUE \
+                equ     _TIME_QUANTUM_MS * _TIMER_FREQUENCY_HZ / 1000
+
 ;_pOldClockHandler \
 ;                dd      ?
 
@@ -23,6 +30,13 @@ InitClock:
                 push    bx
                 push    es
                 push    di
+
+                mov     al, 00110110b
+                out     0x43, al
+                mov     al, _TIMER_COUNTER_START_VALUE and 0xFF
+                out     0x40, al
+                mov     al, _TIMER_COUNTER_START_VALUE shr 8
+                out     0x40, al
 
                 mov     bx, 0x0008
 
@@ -47,15 +61,6 @@ _ClockHandler:
 
                 mov     [ cs:_processSs ], ss
                 mov     [ cs:_processSp ], sp
-
-                ; DEBUG
-                ;mov     ax, 0xB800
-                ;mov     ds, ax
-                ;mov     bx, 80 * 2 * 20
-                ;mov     al, [ bx ]
-                ;inc     al
-                ;mov     [ bx ], al
-                ; END DEBUG
 
                 call    LoadKernelContext
 
