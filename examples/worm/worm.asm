@@ -9,7 +9,7 @@
 
 POINT_SIZE      equ     2
 SCREEN_WIDTH    equ     80
-SCREEN_HEIGHT   equ     25
+SCREEN_HEIGHT   equ     15
 
 MOVE_UP         equ     -SCREEN_WIDTH * POINT_SIZE
 MOVE_DOWN       equ     SCREEN_WIDTH * POINT_SIZE
@@ -45,10 +45,17 @@ _Start:
                 mov     bp, START_BODY_SIZE - 1
 
 @mainCycle:
-                mov     dx, 0
-                mov     cx, 2
-                mov     ah, 0x86
-                int     0x15
+                mov     dx, 0x0500
+@delayLoopOut:
+                mov     cx, 0xFFFF
+@delayLoopIn:
+                loop    @delayLoopIn
+                dec     dx
+                jnz     @delayLoopOut
+                ;mov     dx, 0
+                ;mov     cx, 2
+                ;mov     ah, 0x86
+                ;int     0x15
 
                 mov     ah, 1
                 int     0x16
