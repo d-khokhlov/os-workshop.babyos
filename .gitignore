@@ -14,3 +14,5 @@
 /*.user
 /*.opensdf
 /*.sdf
+/[Dd]ebug/
+/[Rr]elease/

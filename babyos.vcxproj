@@ -76,6 +76,15 @@
     <None Include="process-manager\interrupts186.asm" />
     <None Include="process-manager\mocks186.asm" />
     <None Include="process-manager\syscalls.asm" />
+    <None Include="src\debug\debug186.asm" />
+    <None Include="src\examples\hello-world\hw.asm" />
+    <None Include="src\examples\randstr\randstr.asm" />
+    <None Include="src\examples\worm\worm.asm" />
+    <None Include="src\process-manager\clock186.asm" />
+    <None Include="src\process-manager\context186.asm" />
+    <None Include="src\process-manager\interrupts186.asm" />
+    <None Include="src\process-manager\mocks186.asm" />
+    <None Include="src\process-manager\syscalls186.asm" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="process-manager\common.h" />
@@ -88,11 +97,27 @@
     <ClInclude Include="process-manager\registers.h" />
     <ClInclude Include="process-manager\registers186.h" />
     <ClInclude Include="process-manager\syscalls.h" />
+    <ClInclude Include="src\process-manager\clock.h" />
+    <ClInclude Include="src\process-manager\common.h" />
+    <ClInclude Include="src\process-manager\context.h" />
+    <ClInclude Include="src\process-manager\mocks.h" />
+    <ClInclude Include="src\process-manager\mocks186.h" />
+    <ClInclude Include="src\process-manager\process-manager.h" />
+    <ClInclude Include="src\process-manager\process.h" />
+    <ClInclude Include="src\process-manager\registers.h" />
+    <ClInclude Include="src\process-manager\registers186.h" />
+    <ClInclude Include="src\process-manager\syscalls.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="process-manager\clock.c" />
     <ClCompile Include="process-manager\context.c" />
     <ClCompile Include="process-manager\process-manager.c" />
+    <ClCompile Include="src\process-manager\clock.c" />
+    <ClCompile Include="src\process-manager\context.c" />
+    <ClCompile Include="src\process-manager\process-manager.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="docs\naming.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

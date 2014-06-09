@@ -100,8 +100,8 @@ WVList
 0
 25
 MItem
-25
-..\examples\worm\worm.asm
+29
+..\src\examples\worm\worm.asm
 26
 WString
 6

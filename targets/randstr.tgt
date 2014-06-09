@@ -100,8 +100,8 @@ WVList
 0
 25
 MItem
-31
-..\examples\randstr\randstr.asm
+35
+..\src\examples\randstr\randstr.asm
 26
 WString
 6

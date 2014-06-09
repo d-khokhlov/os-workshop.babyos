@@ -45,6 +45,33 @@
     <None Include="process-manager\syscalls.asm">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="src\debug\debug186.asm">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="src\examples\hello-world\hw.asm">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="src\examples\randstr\randstr.asm">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="src\examples\worm\worm.asm">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="src\process-manager\clock186.asm">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="src\process-manager\context186.asm">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="src\process-manager\interrupts186.asm">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="src\process-manager\mocks186.asm">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="src\process-manager\syscalls186.asm">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="process-manager\clock.h">
@@ -77,6 +104,36 @@
     <ClInclude Include="process-manager\syscalls.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\process-manager\clock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\process-manager\common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\process-manager\context.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\process-manager\mocks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\process-manager\mocks186.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\process-manager\process.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\process-manager\process-manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\process-manager\registers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\process-manager\registers186.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\process-manager\syscalls.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="process-manager\process-manager.c">
@@ -88,5 +145,17 @@
     <ClCompile Include="process-manager\context.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\process-manager\clock.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\process-manager\context.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\process-manager\process-manager.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="docs\naming.txt" />
   </ItemGroup>
 </Project>
