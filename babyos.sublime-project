@@ -2,13 +2,7 @@
 	"folders":
 	[
 		{
-			"path": "process-manager"
-		},
-		{
-			"path": "examples"
-		},
-		{
-			"path": "debug"
+			"path": "src"
 		}
 	]
 }
