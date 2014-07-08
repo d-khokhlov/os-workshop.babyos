@@ -1,3 +1,15 @@
 #pragma once
 
-#include "registers186.h"
+typedef unsigned short CommonRegister;
+typedef unsigned short SegmentRegister;
+typedef unsigned short FlagsRegister;
+
+typedef struct Registers
+{
+    CommonRegister ax, bx, cx, dx;
+    CommonRegister si, di;
+    CommonRegister bp, sp;
+    FlagsRegister flags;
+    SegmentRegister cs, ds, ss, es;
+    CommonRegister ip;
+} Registers;
