@@ -66,11 +66,11 @@ ProcessId _GetFirstNullProcess()
     return ProcessId_None;
 }
 
-ProcessId syscall CreateProcess( char *executablePath, int parameter )
+ProcessId syscall CreateProcess( char *pExecutablePath, int parameter )
 {
     int fileHandle;
     NearMemorySize executableSize, segmentSize;
-    void far *entryPoint;
+    void far *pEntryPoint;
     ProcessId id;
     Process *pProcess;
 
@@ -80,22 +80,22 @@ ProcessId syscall CreateProcess( char *executablePath, int parameter )
     }
     pProcess = &_processes[ id ];
 
-    fileHandle = open( executablePath, O_RDONLY | O_BINARY );
+    fileHandle = open( pExecutablePath, O_RDONLY | O_BINARY );
 
     executableSize = lseek( fileHandle, 0, SEEK_END );
     lseek( fileHandle, 0, SEEK_SET );
 
     segmentSize = executableSize + DEFAULT_STACK_SIZE;
-    entryPoint = AllocateFarMemory( segmentSize );
-    FarReadFromFile( fileHandle, entryPoint, executableSize );
+    pEntryPoint = AllocateFarMemory( segmentSize );
+    FarReadFromFile( fileHandle, pEntryPoint, executableSize );
 
     close( fileHandle );
 
     pProcess->registers.cs =
         pProcess->registers.ds =
         pProcess->registers.es =
-        pProcess->registers.ss = GetFpSegment( entryPoint );
-    pProcess->registers.ip = GetFpOffset( entryPoint );
+        pProcess->registers.ss = GetFpSegment( pEntryPoint );
+    pProcess->registers.ip = GetFpOffset( pEntryPoint );
     pProcess->registers.sp = segmentSize - 1;
     pProcess->parameters[ 0 ] = parameter;
     InitProcessContext( pProcess );

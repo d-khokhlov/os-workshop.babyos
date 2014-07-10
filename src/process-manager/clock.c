@@ -2,21 +2,21 @@
 #include "process-manager.h"
 #include "common.h"
 
-void public HandleClockInterrupt( SegmentRegister *ss, CommonRegister *sp )
+void public HandleClockInterrupt( SegmentRegister *pSs, CommonRegister *pSp )
 {
     Registers *pRegisters;
 
     pRegisters = GetActiveProcessRegisters();
     if ( pRegisters != NULL ) {
-        pRegisters->ss = *ss;
-        pRegisters->sp = *sp;
+        pRegisters->ss = *pSs;
+        pRegisters->sp = *pSp;
     }
 
     ActivateProcess( ChooseProcessToActivate() );
 
     pRegisters = GetActiveProcessRegisters();
     if ( pRegisters != NULL ) {
-        *ss = pRegisters->ss;
-        *sp = pRegisters->sp;
+        *pSs = pRegisters->ss;
+        *pSp = pRegisters->sp;
     }
 }

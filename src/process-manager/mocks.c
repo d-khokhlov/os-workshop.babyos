@@ -18,11 +18,11 @@ extern void far * asmcall AllocateFarMemory( FarMemorySize size )
     return MakeFp( segment, 0 );
 }
 
-extern NearMemorySize FarReadFromFile( int handle, void far *buffer,
+extern NearMemorySize FarReadFromFile( int handle, void far *pBuffer,
     NearMemorySize count )
 {
     NearMemorySize readCount;
-    if ( _dos_read( handle, buffer, count, &readCount ) != 0 ) {
+    if ( _dos_read( handle, pBuffer, count, &readCount ) != 0 ) {
         return 0;
     }
     return readCount;
