@@ -8,6 +8,6 @@ _Start:
                 int     21h
                 retf
 
-_message         db      "Hello, World!", 0Dh, 0Ah, '$'
+_message        db      "Hello, World!", 0Dh, 0Ah, '$'
 
                 end     _Start
