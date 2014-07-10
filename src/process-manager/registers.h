@@ -1,8 +1,8 @@
 #pragma once
 
-typedef unsigned short CommonRegister;
+typedef unsigned int CommonRegister;
 typedef unsigned short SegmentRegister;
-typedef unsigned short FlagsRegister;
+typedef unsigned int FlagsRegister;
 
 typedef struct Registers
 {

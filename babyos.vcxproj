@@ -20,12 +20,12 @@
     <None Include="src\process-manager\context.asm" />
     <None Include="src\process-manager\contexta.asm" />
     <None Include="src\process-manager\interrupts.asm" />
-    <None Include="src\process-manager\mocks.asm" />
     <None Include="src\process-manager\syscalls.asm" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\process-manager\clock.c" />
     <ClCompile Include="src\process-manager\context.c" />
+    <ClCompile Include="src\process-manager\mocks.c" />
     <ClCompile Include="src\process-manager\process-manager.c" />
   </ItemGroup>
   <ItemGroup>
@@ -47,7 +47,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -68,12 +68,15 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(WATCOM)\h</IncludePath>
+    <LibraryPath>$(WATCOM)\lib286;$(WATCOM)\lib386</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_MBCS;far=;near=;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessKeepComments>false</PreprocessKeepComments>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

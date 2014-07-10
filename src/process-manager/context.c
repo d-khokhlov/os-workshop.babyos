@@ -2,7 +2,8 @@
 #include "process.h"
 #include "mocks.h"
 
-CommonRegister public SaveNewContext(
+// todo: после переписывания contexta.asm на C нужно ли будет это?
+CommonRegister asmcall SaveNewContext(
     SegmentRegister cs, CommonRegister ip,
     SegmentRegister ss, CommonRegister sp,
     SegmentRegister ds, SegmentRegister es,

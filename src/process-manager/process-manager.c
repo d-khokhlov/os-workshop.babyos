@@ -70,7 +70,7 @@ ProcessId syscall CreateProcess( char *executablePath, int parameter )
 {
     int fileHandle;
     NearMemorySize executableSize, segmentSize;
-    FarAddress entryPoint;
+    void far *entryPoint;
     ProcessId id;
     Process *pProcess;
 
@@ -82,22 +82,20 @@ ProcessId syscall CreateProcess( char *executablePath, int parameter )
 
     fileHandle = open( executablePath, O_RDONLY | O_BINARY );
 
-    lseek( fileHandle, 0, SEEK_END );
-    executableSize = tell( fileHandle );
+    executableSize = lseek( fileHandle, 0, SEEK_END );
     lseek( fileHandle, 0, SEEK_SET );
 
     segmentSize = executableSize + DEFAULT_STACK_SIZE;
-    entryPoint.segment = AllocateFarMemory( segmentSize );
-    entryPoint.offset = 0;
+    entryPoint = AllocateFarMemory( segmentSize );
     FarReadFromFile( fileHandle, entryPoint, executableSize );
 
     close( fileHandle );
 
-    pProcess->registers.cs = entryPoint.segment;
-    pProcess->registers.ip = entryPoint.offset;
-    pProcess->registers.ds = entryPoint.segment;
-    pProcess->registers.es = entryPoint.segment;
-    pProcess->registers.ss = entryPoint.segment;
+    pProcess->registers.cs =
+        pProcess->registers.ds =
+        pProcess->registers.es =
+        pProcess->registers.ss = GetFpSegment( entryPoint );
+    pProcess->registers.ip = GetFpOffset( entryPoint );
     pProcess->registers.sp = segmentSize - 1;
     pProcess->parameters[ 0 ] = parameter;
     InitProcessContext( pProcess );
@@ -138,6 +136,7 @@ Registers *GetActiveProcessRegisters()
     }
 }
 
+// todo: вынести в загрузчик/инициализатор
 void main()
 {
     char c;
