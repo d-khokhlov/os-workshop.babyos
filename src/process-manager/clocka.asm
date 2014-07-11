@@ -4,8 +4,8 @@
                 public  C InitClock
 
                 extern  C HandleClockInterrupt : near
-                extern  SetInterruptHandler : near
-                extern  GetInterruptHandler : near
+                extern  C SetInterruptHandler : near
+                extern  C GetInterruptHandler : near
                 extern  SaveContext : near
                 extern  RestoreContext : near
                 extern  LoadKernelContext : near
@@ -40,14 +40,16 @@ InitClock:
 
                 mov     bx, 0x0008
 
+                ; hack: этот вызов не корректен для C-версии GetInterruptHandler
                 ;call    GetInterruptHandler
                 ;mov     word ptr _pOldClockHandler, di
                 ;mov     word ptr _pOldClockHandler + 2, es
 
-                mov     di, cs
-                mov     es, di
-                mov     di, offset _ClockHandler
+                push    cs
+                push    offset _ClockHandler
+                push    bx
                 call    SetInterruptHandler
+                add     sp, 6
 
                 pop     di
                 pop     es

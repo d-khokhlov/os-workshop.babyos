@@ -19,16 +19,17 @@
     <None Include="src\process-manager\clocka.asm" />
     <None Include="src\process-manager\context.asm" />
     <None Include="src\process-manager\contexta.asm" />
-    <None Include="src\process-manager\interrupts.asm" />
     <None Include="src\process-manager\syscalls.asm" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\process-manager\clock.c" />
     <ClCompile Include="src\process-manager\context.c" />
+    <ClCompile Include="src\process-manager\interrupts.c" />
     <ClCompile Include="src\process-manager\mocks.c" />
     <ClCompile Include="src\process-manager\process-manager.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\process-manager\interrupts.h" />
     <ClInclude Include="src\process-manager\clock.h" />
     <ClInclude Include="src\process-manager\common.h" />
     <ClInclude Include="src\process-manager\context.h" />

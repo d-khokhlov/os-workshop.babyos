@@ -4,7 +4,7 @@
                 public  C InitSyscalls
 
                 extern  C CreateProcess : near
-                extern  SetInterruptHandler : near
+                extern  C SetInterruptHandler : near
 
                 .code
 
@@ -28,11 +28,11 @@ InitSyscalls:
                 mov     [ bx ], offset CreateProcess
                 add     bx, _HANDLER_POINTER_SIZE
 
-                mov     bx, _SYSCALL_INTERRUPT
-                mov     di, cs
-                mov     es, di
-                mov     di, offset _SyscallMainHandler
+                push    cs
+                push    offset _SyscallMainHandler
+                push    word ptr _SYSCALL_INTERRUPT
                 call    SetInterruptHandler
+                add     sp, 6
 
                 pop     di
                 pop     es
