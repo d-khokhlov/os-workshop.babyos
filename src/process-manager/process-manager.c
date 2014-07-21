@@ -65,7 +65,7 @@ static ProcessId _GetFirstNullProcess()
     return ProcessId_None;
 }
 
-extern ProcessId syscall CreateProcess( char *pExecutablePath, int parameter )
+extern ProcessId CreateProcess( char *pExecutablePath, int parameter )
 {
     int fileHandle;
     NearMemorySize executableSize, segmentSize;

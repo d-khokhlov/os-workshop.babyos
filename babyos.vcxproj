@@ -17,13 +17,13 @@
     <None Include="src\examples\worm\worm.asm" />
     <None Include="src\process-manager\clock.asm" />
     <None Include="src\process-manager\context.asm" />
-    <None Include="src\process-manager\syscalls.asm" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\process-manager\context.c" />
     <ClCompile Include="src\process-manager\interrupts.c" />
     <ClCompile Include="src\process-manager\mocks.c" />
     <ClCompile Include="src\process-manager\process-manager.c" />
+    <ClCompile Include="src\process-manager\syscalls.c" />
     <ClCompile Include="src\process-manager\timer.c" />
   </ItemGroup>
   <ItemGroup>

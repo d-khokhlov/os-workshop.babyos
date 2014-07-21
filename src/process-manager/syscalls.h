@@ -1,5 +1,3 @@
 #pragma once
 
-#include "common.h"
-
-void public InitSyscalls();
+extern void InitSyscalls();

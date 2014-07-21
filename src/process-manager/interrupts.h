@@ -20,6 +20,8 @@
 #define INTERRUPT_TIMER INTERRUPT_IRQ0
 #define INTERRUPT_KEYBOARD INTERRUPT_IRQ1
 
+#define INTERRUPT_SYSCALLS 0x90
+
 // Нужно только для EndInterrupt
 #define PIC1
 #define PIC2
