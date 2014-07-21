@@ -1,7 +1,5 @@
 #pragma once
 
-#include "registers.h"
-
-Registers *GetActiveProcessRegisters();
-ProcessId ChooseProcessToActivate();
-void ActivateProcess( ProcessId id );
+extern Process *GetActiveProcess();
+extern ProcessId ChooseProcessToActivate();
+extern void ActivateProcess( ProcessId id );

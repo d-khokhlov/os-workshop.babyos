@@ -1,7 +1,5 @@
 #pragma once
 
-#include "registers.h"
-
 typedef enum ProcessState
 {
     ProcessState_Null,
@@ -19,6 +17,8 @@ typedef int ProcessParameters[ MAX_PROCESS_PARAMETERS_COUNT ];
 typedef struct Process
 {
     ProcessState state;
-    Registers registers;
+    void far *pEntryPoint;
+    void far *pDataSegment;
+    void far *pStackTop;
     ProcessParameters parameters;
 } Process;

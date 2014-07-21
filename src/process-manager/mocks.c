@@ -1,6 +1,7 @@
-#include <dos.h>
-#include "mocks.h"
 #include "common.h"
+#include "mocks.h"
+#include <dos.h>
+#include <conio.h>
 
 extern void far * asmcall AllocateFarMemory( FarMemorySize size )
 {
@@ -26,4 +27,9 @@ extern NearMemorySize FarReadFromFile( int handle, void far *pBuffer,
         return 0;
     }
     return readCount;
+}
+
+extern unsigned int OutByteToPort( unsigned int port, unsigned int value )
+{
+    return outp( port, value );
 }

@@ -1,7 +1,8 @@
 #pragma once
 
-#include "common.h"
-#include "mocks.h"
+#include "process.h"
 
-void InitProcessContext( Process *pProcess );
-void public InitKernelContext();
+extern void SwitchContextToKernel();
+extern void SwitchContextToProcess();
+extern void InitProcessContext( Process *pProcess );
+extern void InitKernelContext();

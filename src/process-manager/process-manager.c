@@ -1,20 +1,19 @@
 #include <io.h>
 #include <fcntl.h>
 #include "common.h"
-#include "clock.h"
+#include "timer.h"
 #include "process.h"
-#include "registers.h"
 #include "mocks.h"
 #include "context.h"
 #include "syscalls.h"
 
 #define _MAX_PROCESSES_COUNT 20
-Process _processes[ _MAX_PROCESSES_COUNT ];
-ProcessId _activeProcessId;
+static Process _processes[ _MAX_PROCESSES_COUNT ];
+static ProcessId _activeProcessId;
 
 #define DEFAULT_STACK_SIZE 2048
 
-void _InitProcessManager()
+static void _InitProcessManager()
 {
     int id;
     for ( id = 0; id < _MAX_PROCESSES_COUNT; id++ ) {
@@ -23,7 +22,7 @@ void _InitProcessManager()
     _activeProcessId = ProcessId_None;
 }
 
-ProcessId _GetNextProcessId( ProcessId id )
+static ProcessId _GetNextProcessId( ProcessId id )
 {
     if ( ( 0 <= id ) && ( id <= _MAX_PROCESSES_COUNT - 2 ) ) {
         return id + 1;
@@ -32,7 +31,7 @@ ProcessId _GetNextProcessId( ProcessId id )
     }
 }
 
-ProcessId _GetNextReadyProcess( ProcessId id )
+static ProcessId _GetNextReadyProcess( ProcessId id )
 {
     ProcessId nextId;
 
@@ -55,7 +54,7 @@ ProcessId _GetNextReadyProcess( ProcessId id )
     return ProcessId_None;
 }
 
-ProcessId _GetFirstNullProcess()
+static ProcessId _GetFirstNullProcess()
 {
     ProcessId id;
     for ( id = 0; id < _MAX_PROCESSES_COUNT; id++ ) {
@@ -66,11 +65,11 @@ ProcessId _GetFirstNullProcess()
     return ProcessId_None;
 }
 
-ProcessId syscall CreateProcess( char *pExecutablePath, int parameter )
+extern ProcessId syscall CreateProcess( char *pExecutablePath, int parameter )
 {
     int fileHandle;
     NearMemorySize executableSize, segmentSize;
-    void far *pEntryPoint;
+    SegmentAddress segmentAddress;
     ProcessId id;
     Process *pProcess;
 
@@ -78,7 +77,7 @@ ProcessId syscall CreateProcess( char *pExecutablePath, int parameter )
     if ( id == ProcessId_None ) {
         return ProcessId_None;
     }
-    pProcess = &_processes[ id ];
+    pProcess = &( _processes[ id ] );
 
     fileHandle = open( pExecutablePath, O_RDONLY | O_BINARY );
 
@@ -86,17 +85,14 @@ ProcessId syscall CreateProcess( char *pExecutablePath, int parameter )
     lseek( fileHandle, 0, SEEK_SET );
 
     segmentSize = executableSize + DEFAULT_STACK_SIZE;
-    pEntryPoint = AllocateFarMemory( segmentSize );
-    FarReadFromFile( fileHandle, pEntryPoint, executableSize );
+    pProcess->pEntryPoint = AllocateFarMemory( segmentSize );
+    FarReadFromFile( fileHandle, pProcess->pEntryPoint, executableSize );
 
     close( fileHandle );
 
-    pProcess->registers.cs =
-        pProcess->registers.ds =
-        pProcess->registers.es =
-        pProcess->registers.ss = GetFpSegment( pEntryPoint );
-    pProcess->registers.ip = GetFpOffset( pEntryPoint );
-    pProcess->registers.sp = segmentSize - 1;
+    segmentAddress = GetFpSegment( pProcess->pEntryPoint );
+    pProcess->pDataSegment = MakeFp( segmentAddress, 0 );
+    pProcess->pStackTop = MakeFp( segmentAddress, segmentSize - 1 );
     pProcess->parameters[ 0 ] = parameter;
     InitProcessContext( pProcess );
     pProcess->state = ProcessState_Ready;
@@ -104,7 +100,7 @@ ProcessId syscall CreateProcess( char *pExecutablePath, int parameter )
     return id;
 }
 
-ProcessId ChooseProcessToActivate()
+extern ProcessId ChooseProcessToActivate()
 {
     ProcessId nextId = _GetNextReadyProcess( _activeProcessId );
     if ( nextId == ProcessId_None ) {
@@ -114,7 +110,7 @@ ProcessId ChooseProcessToActivate()
     }
 }
 
-void ActivateProcess( ProcessId id )
+extern void ActivateProcess( ProcessId id )
 {
     if ( id != _activeProcessId ) {
         if ( _activeProcessId != ProcessId_None ) {
@@ -127,17 +123,17 @@ void ActivateProcess( ProcessId id )
     }
 }
 
-Registers *GetActiveProcessRegisters()
+extern Process *GetActiveProcess()
 {
     if ( _activeProcessId == ProcessId_None ) {
         return NULL;
     } else {
-        return &( _processes[ _activeProcessId ].registers );
+        return &( _processes[ _activeProcessId ] );
     }
 }
 
 // todo: вынести в загрузчик/инициализатор
-void main()
+extern void main()
 {
     char c;
     int i;
@@ -146,12 +142,12 @@ void main()
     InitSyscalls();
     _InitProcessManager();
 
-    for ( i = 0; i < 1; i++ ) {
+    for ( i = 0; i < 3; i++ ) {
         CreateProcess( "randstr", 24 - i );
     }
     CreateProcess( "worm", 0 );
 
-    InitClock();
+    InitTimer();
 
     read( STDIN_FILENO, &c, 1 );
 }

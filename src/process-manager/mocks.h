@@ -34,3 +34,5 @@ extern void far * asmcall AllocateFarMemory( FarMemorySize size );
 
 extern NearMemorySize FarReadFromFile( int handle, void far *pBuffer,
     NearMemorySize count );
+
+extern unsigned int OutByteToPort( unsigned int port, unsigned int value );
