@@ -32,6 +32,6 @@ static void naked _SyscallInterruptHandler()
 
 extern void InitSyscalls()
 {
-    _pSyscallHandlers[ 0 ] = &CreateProcess;
+    _pSyscallHandlers[ 0 ] = (_PSyscallHandler) &CreateProcess;
     SetInterruptHandler( INTERRUPT_SYSCALLS, &_SyscallInterruptHandler );
 }

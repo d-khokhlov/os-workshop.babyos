@@ -9,7 +9,7 @@
 // T.е. сюда должен передаваться указатель на функцию, содержащую голую логику
 // обработки прерывания, все остальное должно добавляться само. (Посмотреть как
 // это сделано в MINIX.)
-extern void asmcall SetInterruptHandler( unsigned short number, void *pHandler )
+extern void SetInterruptHandler( unsigned short number, void *pHandler )
 {
     // hack: инициализация добавлена только чтобы избежать warning-а компилятора
     SegmentRegister csRegister = 0;
@@ -25,7 +25,7 @@ extern void asmcall SetInterruptHandler( unsigned short number, void *pHandler )
     }
 }
 
-extern void far * asmcall GetInterruptHandler( unsigned short number )
+extern void far * GetInterruptHandler( unsigned short number )
 {
     void far * far *ppVector = MakeFp( 0, number * 4 );
     return *ppVector;

@@ -34,5 +34,5 @@
     asm{ pop ax }\
     asm{ iret }
 
-extern void asmcall SetInterruptHandler( unsigned short interrupt, void *pHandler );
-extern void far * asmcall GetInterruptHandler( unsigned short interrupt );
+extern void SetInterruptHandler( unsigned short interrupt, void *pHandler );
+extern void far * GetInterruptHandler( unsigned short interrupt );

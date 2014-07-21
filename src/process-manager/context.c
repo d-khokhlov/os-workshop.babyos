@@ -65,7 +65,7 @@ extern void naked SwitchContextToProcess()
     }
 }
 
-#define PushToStack( pStackTop, type, value) \
+#define _PushToStack( pStackTop, type, value) \
     ( pStackTop ) = ( (char far *) ( pStackTop ) ) - sizeof( value ); \
     *( (type far *) ( pStackTop ) ) = ( value )
 
@@ -79,28 +79,28 @@ extern void InitProcessContext( Process *pProcess )
         GetFpOffset( pStackTop ) & (OffsetAddress) ( ~1 ) );
 
     for ( i = MAX_PROCESS_PARAMETERS_COUNT - 1; i >= 0; i-- ) {
-        PushToStack( pStackTop, int, pProcess->parameters[ i ] );
+        _PushToStack( pStackTop, int, pProcess->parameters[ i ] );
     }
 
-    PushToStack( pStackTop, FlagsRegister, _DEFAULT_FLAGS );
-    PushToStack( pStackTop, void far *, pProcess->pEntryPoint );
+    _PushToStack( pStackTop, FlagsRegister, _DEFAULT_FLAGS );
+    _PushToStack( pStackTop, void far *, pProcess->pEntryPoint );
 
     pProcess->pStackTop = pStackTop;
     for ( i = 0; i < COMMON_REGISTERS_COUNT; i++ ) {
-        PushToStack( pStackTop, CommonRegister, 0 );
+        _PushToStack( pStackTop, CommonRegister, 0 );
     }
     ( ( CommonRegister far * ) pStackTop )[ POPA_STACK_POINTER_INDEX ] =
         GetFpOffset( pProcess->pStackTop );
 
-    PushToStack( pStackTop, SegmentAddress,
+    _PushToStack( pStackTop, SegmentAddress,
         GetFpSegment( pProcess->pDataSegment ) );
-    PushToStack( pStackTop, SegmentAddress,
+    _PushToStack( pStackTop, SegmentAddress,
         GetFpSegment( pProcess->pDataSegment ) );
 
     pProcess->pStackTop = pStackTop;
 }
 
-#undef PushToStack
+#undef _PushToStack
 
 extern void InitKernelContext()
 {

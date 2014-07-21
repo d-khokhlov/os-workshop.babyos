@@ -3,7 +3,7 @@
 #include <dos.h>
 #include <conio.h>
 
-extern void far * asmcall AllocateFarMemory( FarMemorySize size )
+extern void far * AllocateFarMemory( FarMemorySize size )
 {
     unsigned int sizeInParagraphs;
     SegmentAddress segment;

@@ -30,7 +30,7 @@ typedef unsigned long FarMemorySize;
 
 // (1)
 
-extern void far * asmcall AllocateFarMemory( FarMemorySize size );
+extern void far * AllocateFarMemory( FarMemorySize size );
 
 extern NearMemorySize FarReadFromFile( int handle, void far *pBuffer,
     NearMemorySize count );

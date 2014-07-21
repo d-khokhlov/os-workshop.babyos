@@ -11,7 +11,7 @@
 static Process _processes[ _MAX_PROCESSES_COUNT ];
 static ProcessId _activeProcessId;
 
-#define DEFAULT_STACK_SIZE 2048
+#define _DEFAULT_STACK_SIZE 2048
 
 static void _InitProcessManager()
 {
@@ -84,7 +84,7 @@ extern ProcessId CreateProcess( char *pExecutablePath, int parameter )
     executableSize = lseek( fileHandle, 0, SEEK_END );
     lseek( fileHandle, 0, SEEK_SET );
 
-    segmentSize = executableSize + DEFAULT_STACK_SIZE;
+    segmentSize = executableSize + _DEFAULT_STACK_SIZE;
     pProcess->pEntryPoint = AllocateFarMemory( segmentSize );
     FarReadFromFile( fileHandle, pProcess->pEntryPoint, executableSize );
 
