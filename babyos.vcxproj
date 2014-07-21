@@ -27,6 +27,7 @@
     <ClCompile Include="src\process-manager\timer.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\debug\debug.h" />
     <ClInclude Include="src\process-manager\interrupts.h" />
     <ClInclude Include="src\process-manager\common.h" />
     <ClInclude Include="src\process-manager\context.h" />

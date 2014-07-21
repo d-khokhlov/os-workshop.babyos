@@ -1,8 +1,8 @@
                 .model  tiny
                 .186
 
-                public  DEBUG_PrintState
-                public  DEBUG_Pause
+                public  C DEBUG_PrintState
+                public  C DEBUG_Pause
 
                 .code
 
