@@ -2,7 +2,7 @@
 #include "context.h"
 #include "process.h"
 #include "process-manager.h"
-#include "mocks.h"
+#include "memory.h"
 
 #define _DEFAULT_FLAGS 0x7202
 #define _KERNEL_STACK_SIZE 2048

@@ -1,6 +1,9 @@
+// todo: убрать эти заголовочные файлов, реализовав необходимые обертки в mocks.h
 #include <io.h>
 #include <fcntl.h>
+
 #include "common.h"
+#include "memory.h"
 #include "timer.h"
 #include "process.h"
 #include "mocks.h"

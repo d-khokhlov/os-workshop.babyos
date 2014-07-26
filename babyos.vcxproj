@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="src\process-manager\context.c" />
     <ClCompile Include="src\process-manager\interrupts.c" />
+    <ClCompile Include="src\process-manager\memory.c" />
     <ClCompile Include="src\process-manager\mocks.c" />
     <ClCompile Include="src\process-manager\process-manager.c" />
     <ClCompile Include="src\process-manager\syscalls.c" />
@@ -31,6 +32,7 @@
     <ClInclude Include="src\process-manager\interrupts.h" />
     <ClInclude Include="src\process-manager\common.h" />
     <ClInclude Include="src\process-manager\context.h" />
+    <ClInclude Include="src\process-manager\memory.h" />
     <ClInclude Include="src\process-manager\mocks.h" />
     <ClInclude Include="src\process-manager\process-manager.h" />
     <ClInclude Include="src\process-manager\process.h" />

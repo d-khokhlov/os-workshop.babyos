@@ -1,7 +1,7 @@
 #include "common.h"
 #include "interrupts.h"
 #include "registers.h"
-#include "mocks.h"
+#include "memory.h"
 
 // todo: Попробовать написать такую реализацию, которая не требовала бы
 // реализовывать для каждого обработчика функцию-обертку, переключающую
