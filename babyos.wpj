@@ -4,10 +4,10 @@ projectIdent
 VpeMain
 1
 WRect
-5290
-0
-4949
-10240
+298
+-75
+9984
+10391
 2
 MProject
 3
@@ -57,7 +57,7 @@ VComponent
 14
 WRect
 0
-3166
+3157
 5680
 4096
 0
@@ -73,7 +73,7 @@ VComponent
 17
 WRect
 0
-3906
+3896
 5680
 4096
 0
@@ -89,9 +89,9 @@ VComponent
 20
 WRect
 208
-94
+85
 5680
-4181
+4171
 0
 0
 21

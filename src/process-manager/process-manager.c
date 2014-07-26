@@ -5,7 +5,7 @@
 #include "common.h"
 #include "memory.h"
 #include "timer.h"
-#include "process.h"
+#include "processes.h"
 #include "mocks.h"
 #include "context.h"
 #include "syscalls.h"

@@ -37,7 +37,7 @@
     <ClInclude Include="src\process-manager\memory.h" />
     <ClInclude Include="src\process-manager\mocks.h" />
     <ClInclude Include="src\process-manager\process-manager.h" />
-    <ClInclude Include="src\process-manager\process.h" />
+    <ClInclude Include="src\process-manager\processes.h" />
     <ClInclude Include="src\process-manager\architecture-186.h" />
     <ClInclude Include="src\process-manager\syscalls.h" />
     <ClInclude Include="src\process-manager\timer.h" />

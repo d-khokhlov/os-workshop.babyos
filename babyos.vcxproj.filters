@@ -67,9 +67,6 @@
     <ClInclude Include="src\process-manager\mocks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\process-manager\process.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\process-manager\process-manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -95,6 +92,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\process-manager\architecture-x86-32.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\process-manager\processes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
