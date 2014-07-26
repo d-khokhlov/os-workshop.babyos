@@ -3,6 +3,7 @@
 #include "process.h"
 #include "process-manager.h"
 #include "memory.h"
+#include "architecture.h"
 
 #define _DEFAULT_FLAGS 0x7202
 #define _KERNEL_STACK_SIZE 2048
@@ -76,7 +77,7 @@ extern void InitProcessContext( Process *pProcess )
 
     // Выбрать ближайший четный адрес для вершины стека (обнулить младший бит).
     pStackTop = MakeFp( GetFpSegment( pStackTop ),
-        GetFpOffset( pStackTop ) & (OffsetAddress) ( ~1 ) );
+        GetFpOffset( pStackTop ) & (Offset) ( ~1 ) );
 
     for ( i = MAX_PROCESS_PARAMETERS_COUNT - 1; i >= 0; i-- ) {
         _PushToStack( pStackTop, int, pProcess->parameters[ i ] );
@@ -92,9 +93,9 @@ extern void InitProcessContext( Process *pProcess )
     ( ( CommonRegister far * ) pStackTop )[ POPA_STACK_POINTER_INDEX ] =
         GetFpOffset( pProcess->pStackTop );
 
-    _PushToStack( pStackTop, SegmentAddress,
+    _PushToStack( pStackTop, SegmentRegister,
         GetFpSegment( pProcess->pDataSegment ) );
-    _PushToStack( pStackTop, SegmentAddress,
+    _PushToStack( pStackTop, SegmentRegister,
         GetFpSegment( pProcess->pDataSegment ) );
 
     pProcess->pStackTop = pStackTop;

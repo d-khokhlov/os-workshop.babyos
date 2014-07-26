@@ -71,8 +71,8 @@ static ProcessId _GetFirstNullProcess()
 extern ProcessId CreateProcess( char *pExecutablePath, int parameter )
 {
     int fileHandle;
-    NearMemorySize executableSize, segmentSize;
-    SegmentAddress segmentAddress;
+    MemoryBlockSize executableSize, segmentSize;
+    Segment segment;
     ProcessId id;
     Process *pProcess;
 
@@ -93,9 +93,9 @@ extern ProcessId CreateProcess( char *pExecutablePath, int parameter )
 
     close( fileHandle );
 
-    segmentAddress = GetFpSegment( pProcess->pEntryPoint );
-    pProcess->pDataSegment = MakeFp( segmentAddress, 0 );
-    pProcess->pStackTop = MakeFp( segmentAddress, segmentSize - 1 );
+    segment = GetFpSegment( pProcess->pEntryPoint );
+    pProcess->pDataSegment = MakeFp( segment, 0 );
+    pProcess->pStackTop = MakeFp( segment, segmentSize - 1 );
     pProcess->parameters[ 0 ] = parameter;
     InitProcessContext( pProcess );
     pProcess->state = ProcessState_Ready;

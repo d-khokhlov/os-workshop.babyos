@@ -2,14 +2,14 @@
 #include <dos.h>
 #include <conio.h>
 
-extern NearMemorySize FarReadFromFile( int handle, void far *pBuffer,
-    NearMemorySize count )
+extern MemoryBlockSize FarReadFromFile( int handle, void far *pBuffer,
+    MemoryBlockSize count )
 {
-    NearMemorySize readCount;
-    if ( _dos_read( handle, pBuffer, count, &readCount ) != 0 ) {
+    MemoryBlockSize actualCount;
+    if ( _dos_read( handle, pBuffer, count, &actualCount ) != 0 ) {
         return 0;
     }
-    return readCount;
+    return actualCount;
 }
 
 extern unsigned int OutByteToPort( unsigned int port, unsigned int value )

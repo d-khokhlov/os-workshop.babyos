@@ -29,6 +29,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\debug\debug.h" />
+    <ClInclude Include="src\process-manager\architecture-x86-32.h" />
+    <ClInclude Include="src\process-manager\architecture.h" />
     <ClInclude Include="src\process-manager\interrupts.h" />
     <ClInclude Include="src\process-manager\common.h" />
     <ClInclude Include="src\process-manager\context.h" />
@@ -36,7 +38,7 @@
     <ClInclude Include="src\process-manager\mocks.h" />
     <ClInclude Include="src\process-manager\process-manager.h" />
     <ClInclude Include="src\process-manager\process.h" />
-    <ClInclude Include="src\process-manager\registers.h" />
+    <ClInclude Include="src\process-manager\architecture-186.h" />
     <ClInclude Include="src\process-manager\syscalls.h" />
     <ClInclude Include="src\process-manager\timer.h" />
   </ItemGroup>

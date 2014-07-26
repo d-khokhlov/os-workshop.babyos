@@ -73,9 +73,6 @@
     <ClInclude Include="src\process-manager\process-manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\process-manager\registers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\process-manager\syscalls.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -89,6 +86,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\process-manager\memory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\process-manager\architecture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\process-manager\architecture-186.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\process-manager\architecture-x86-32.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

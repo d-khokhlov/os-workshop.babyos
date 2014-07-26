@@ -1,6 +1,6 @@
 #include "common.h"
 #include "interrupts.h"
-#include "registers.h"
+#include "architecture.h"
 #include "memory.h"
 
 // todo: Попробовать написать такую реализацию, которая не требовала бы
@@ -11,15 +11,12 @@
 // это сделано в MINIX.)
 extern void SetInterruptHandler( unsigned short number, void *pHandler )
 {
-    // hack: инициализация добавлена только чтобы избежать warning-а компилятора
-    SegmentRegister csRegister = 0;
     void far * far *ppVector = MakeFp( 0, number * 4 );
     asm {
-        mov csRegister, cs
         pushf
         cli
     }
-    *ppVector = MakeFp( csRegister, pHandler );
+    *ppVector = MakeFp( GetCurrentCodeSegment(), pHandler );
     asm {
         popf
     }
