@@ -1,11 +1,11 @@
 #include "common.h"
 #include "context.h"
-#include "processes.h"
-#include "process-manager.h"
+#include "process.h"
+#include "process-pool.h"
 #include "memory.h"
 #include "architecture.h"
 
-#define _DEFAULT_FLAGS 0x7202
+#define _DEFAULT_FLAGS_REGISTER 0x7202
 #define _KERNEL_STACK_SIZE 2048
 
 // hack: Ассемблер, встроенный в Watcom C, не умеет использовать члены структур
@@ -18,12 +18,18 @@ static void *_pReturnPoint;
 
 static void _SaveProcessContext()
 {
-    GetActiveProcess()->pStackTop = _pProcessStackTop;
+    Process *pActiveProcess = ProcessPool_GetActiveProcess();
+    if ( pActiveProcess != NULL ) {
+        pActiveProcess->pStackTop = _pProcessStackTop;
+    }
 }
 
 static void _LoadProcessContext()
 {
-    _pProcessStackTop = GetActiveProcess()->pStackTop;
+    Process *pActiveProcess = ProcessPool_GetActiveProcess();
+    if ( pActiveProcess != NULL ) {
+        _pProcessStackTop = pActiveProcess->pStackTop;
+    }
 }
 
 extern void naked SwitchContextToKernel()
@@ -79,11 +85,11 @@ extern void InitProcessContext( Process *pProcess )
     pStackTop = MakeFp( GetFpSegment( pStackTop ),
         GetFpOffset( pStackTop ) & (Offset) ( ~1 ) );
 
-    for ( i = MAX_PROCESS_PARAMETERS_COUNT - 1; i >= 0; i-- ) {
+    for ( i = ProcessParameters_MaxCount - 1; i >= 0; i-- ) {
         _PushToStack( pStackTop, int, pProcess->parameters[ i ] );
     }
 
-    _PushToStack( pStackTop, FlagsRegister, _DEFAULT_FLAGS );
+    _PushToStack( pStackTop, FlagsRegister, _DEFAULT_FLAGS_REGISTER );
     _PushToStack( pStackTop, void far *, pProcess->pEntryPoint );
 
     pProcess->pStackTop = pStackTop;

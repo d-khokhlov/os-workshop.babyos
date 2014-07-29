@@ -51,13 +51,13 @@ WFileName
 14
 targets\pm.tgt
 0
-9
+13
 13
 VComponent
 14
 WRect
 0
-3157
+3128
 5680
 4096
 0
@@ -73,7 +73,7 @@ VComponent
 17
 WRect
 0
-3896
+3868
 5680
 4096
 0
@@ -89,9 +89,9 @@ VComponent
 20
 WRect
 208
-85
+56
 5680
-4171
+4143
 0
 0
 21

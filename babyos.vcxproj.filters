@@ -56,6 +56,18 @@
     <ClCompile Include="src\process-manager\memory.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\process-manager\process-storage.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\process-manager\process.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\process-manager\process-queue.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\process-manager\process-pool.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\process-manager\common.h">
@@ -94,7 +106,16 @@
     <ClInclude Include="src\process-manager\architecture-x86-32.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\process-manager\processes.h">
+    <ClInclude Include="src\process-manager\process.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\process-manager\process-queue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\process-manager\process-storage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\process-manager\process-pool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

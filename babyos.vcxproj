@@ -24,10 +24,16 @@
     <ClCompile Include="src\process-manager\memory.c" />
     <ClCompile Include="src\process-manager\mocks.c" />
     <ClCompile Include="src\process-manager\process-manager.c" />
+    <ClCompile Include="src\process-manager\process-queue.c" />
+    <ClCompile Include="src\process-manager\process-storage.c" />
+    <ClCompile Include="src\process-manager\process.c" />
+    <ClCompile Include="src\process-manager\process-pool.c" />
     <ClCompile Include="src\process-manager\syscalls.c" />
     <ClCompile Include="src\process-manager\timer.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\process-manager\process-pool.h" />
+    <ClInclude Include="src\process-manager\process-queue.h" />
     <ClInclude Include="src\debug\debug.h" />
     <ClInclude Include="src\process-manager\architecture-x86-32.h" />
     <ClInclude Include="src\process-manager\architecture.h" />
@@ -37,7 +43,8 @@
     <ClInclude Include="src\process-manager\memory.h" />
     <ClInclude Include="src\process-manager\mocks.h" />
     <ClInclude Include="src\process-manager\process-manager.h" />
-    <ClInclude Include="src\process-manager\processes.h" />
+    <ClInclude Include="src\process-manager\process-storage.h" />
+    <ClInclude Include="src\process-manager\process.h" />
     <ClInclude Include="src\process-manager\architecture-186.h" />
     <ClInclude Include="src\process-manager\syscalls.h" />
     <ClInclude Include="src\process-manager\timer.h" />

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "processes.h"
+#include "process.h"
 
 extern void SwitchContextToKernel();
 extern void SwitchContextToProcess();

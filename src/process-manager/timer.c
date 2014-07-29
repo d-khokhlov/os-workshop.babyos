@@ -3,7 +3,7 @@
 #include "mocks.h"
 #include "interrupts.h"
 #include "context.h"
-#include "process-manager.h"
+#include "process-pool.h"
 
 #define _TIMER_FREQUENCY_HZ 1193180ul
 #define _TIME_QUANTUM_MS 1ul
@@ -21,7 +21,7 @@
 
 static void _HandleTimerInterrupt()
 {
-    ActivateProcess( ChooseProcessToActivate() );
+    ProcessPool_ChooseProcessAndActivate();
 }
 
 static void naked _TimerInterruptHandler()
