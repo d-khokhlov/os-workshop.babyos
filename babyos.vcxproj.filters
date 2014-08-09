@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
@@ -13,88 +9,31 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Assembly Files">
+      <UniqueIdentifier>{fac6a3b1-08a0-42e1-9cd2-88e5137a70fc}</UniqueIdentifier>
+      <Extensions>asm;inc</Extensions>
+    </Filter>
+    <Filter Include="C Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\process-manager\clock.asm">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="src\process-manager\context.asm">
-      <Filter>Source Files</Filter>
-    </None>
     <None Include="src\debug\debug.asm">
-      <Filter>Source Files</Filter>
+      <Filter>Assembly Files</Filter>
     </None>
     <None Include="src\examples\hello-world\hw.asm">
-      <Filter>Source Files</Filter>
+      <Filter>Assembly Files</Filter>
     </None>
     <None Include="src\examples\randstr\randstr.asm">
-      <Filter>Source Files</Filter>
+      <Filter>Assembly Files</Filter>
     </None>
     <None Include="src\examples\worm\worm.asm">
-      <Filter>Source Files</Filter>
+      <Filter>Assembly Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\process-manager\context.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\process-manager\mocks.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\process-manager\process-manager.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\process-manager\interrupts.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\process-manager\timer.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\process-manager\syscalls.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\process-manager\memory.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\process-manager\process-storage.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\process-manager\process.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\process-manager\process-queue.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\process-manager\process-pool.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\process-manager\common.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\process-manager\context.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\process-manager\mocks.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\process-manager\process-manager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\process-manager\syscalls.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\process-manager\interrupts.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\process-manager\timer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\debug\debug.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\process-manager\memory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\process-manager\architecture.h">
@@ -106,7 +45,28 @@
     <ClInclude Include="src\process-manager\architecture-x86-32.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\process-manager\common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\process-manager\context.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\process-manager\interrupts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\process-manager\memory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\process-manager\mocks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\process-manager\process.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\process-manager\process-manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\process-manager\process-pool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\process-manager\process-queue.h">
@@ -115,8 +75,46 @@
     <ClInclude Include="src\process-manager\process-storage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\process-manager\process-pool.h">
+    <ClInclude Include="src\process-manager\syscalls.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\process-manager\timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\process-manager\context.c">
+      <Filter>C Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\process-manager\interrupts.c">
+      <Filter>C Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\process-manager\memory.c">
+      <Filter>C Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\process-manager\mocks.c">
+      <Filter>C Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\process-manager\process.c">
+      <Filter>C Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\process-manager\process-manager.c">
+      <Filter>C Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\process-manager\process-pool.c">
+      <Filter>C Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\process-manager\process-queue.c">
+      <Filter>C Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\process-manager\process-storage.c">
+      <Filter>C Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\process-manager\syscalls.c">
+      <Filter>C Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\process-manager\timer.c">
+      <Filter>C Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

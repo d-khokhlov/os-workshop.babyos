@@ -15,8 +15,24 @@
     <None Include="src\examples\hello-world\hw.asm" />
     <None Include="src\examples\randstr\randstr.asm" />
     <None Include="src\examples\worm\worm.asm" />
-    <None Include="src\process-manager\clock.asm" />
-    <None Include="src\process-manager\context.asm" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\debug\debug.h" />
+    <ClInclude Include="src\process-manager\architecture-186.h" />
+    <ClInclude Include="src\process-manager\architecture-x86-32.h" />
+    <ClInclude Include="src\process-manager\architecture.h" />
+    <ClInclude Include="src\process-manager\common.h" />
+    <ClInclude Include="src\process-manager\context.h" />
+    <ClInclude Include="src\process-manager\interrupts.h" />
+    <ClInclude Include="src\process-manager\memory.h" />
+    <ClInclude Include="src\process-manager\mocks.h" />
+    <ClInclude Include="src\process-manager\process-manager.h" />
+    <ClInclude Include="src\process-manager\process-pool.h" />
+    <ClInclude Include="src\process-manager\process-queue.h" />
+    <ClInclude Include="src\process-manager\process-storage.h" />
+    <ClInclude Include="src\process-manager\process.h" />
+    <ClInclude Include="src\process-manager\syscalls.h" />
+    <ClInclude Include="src\process-manager\timer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\process-manager\context.c" />
@@ -24,30 +40,12 @@
     <ClCompile Include="src\process-manager\memory.c" />
     <ClCompile Include="src\process-manager\mocks.c" />
     <ClCompile Include="src\process-manager\process-manager.c" />
+    <ClCompile Include="src\process-manager\process-pool.c" />
     <ClCompile Include="src\process-manager\process-queue.c" />
     <ClCompile Include="src\process-manager\process-storage.c" />
     <ClCompile Include="src\process-manager\process.c" />
-    <ClCompile Include="src\process-manager\process-pool.c" />
     <ClCompile Include="src\process-manager\syscalls.c" />
     <ClCompile Include="src\process-manager\timer.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\process-manager\process-pool.h" />
-    <ClInclude Include="src\process-manager\process-queue.h" />
-    <ClInclude Include="src\debug\debug.h" />
-    <ClInclude Include="src\process-manager\architecture-x86-32.h" />
-    <ClInclude Include="src\process-manager\architecture.h" />
-    <ClInclude Include="src\process-manager\interrupts.h" />
-    <ClInclude Include="src\process-manager\common.h" />
-    <ClInclude Include="src\process-manager\context.h" />
-    <ClInclude Include="src\process-manager\memory.h" />
-    <ClInclude Include="src\process-manager\mocks.h" />
-    <ClInclude Include="src\process-manager\process-manager.h" />
-    <ClInclude Include="src\process-manager\process-storage.h" />
-    <ClInclude Include="src\process-manager\process.h" />
-    <ClInclude Include="src\process-manager\architecture-186.h" />
-    <ClInclude Include="src\process-manager\syscalls.h" />
-    <ClInclude Include="src\process-manager\timer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{66AF296D-7D9B-40E3-89AF-C98364757F75}</ProjectGuid>
