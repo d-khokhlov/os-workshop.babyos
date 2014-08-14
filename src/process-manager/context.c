@@ -11,7 +11,7 @@
 // hack: Ассемблер, встроенный в Watcom C, не умеет использовать члены структур
 // из C. Поэтому в качестве типа этих двух переменных не получаеся использовать
 // какую-нибудь абстрактную структуру для хранения контекста.
-static void far * _pKernelStackTop;
+static void far *_pKernelStackTop;
 static void far *_pProcessStackTop;
 
 static void *_pReturnPoint;
