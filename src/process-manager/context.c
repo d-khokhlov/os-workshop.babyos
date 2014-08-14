@@ -5,7 +5,7 @@
 #include "memory.h"
 #include "architecture.h"
 
-#define _DEFAULT_FLAGS_REGISTER 0x7202
+#define _DEFAULT_FLAGS_VALUE 0x7202
 #define _KERNEL_STACK_SIZE 2048
 
 // hack: Ассемблер, встроенный в Watcom C, не умеет использовать члены структур
@@ -89,7 +89,7 @@ extern void InitProcessContext( Process *pProcess )
         _PushToStack( pStackTop, int, pProcess->parameters[ i ] );
     }
 
-    _PushToStack( pStackTop, FlagsRegister, _DEFAULT_FLAGS_REGISTER );
+    _PushToStack( pStackTop, FlagsRegister, _DEFAULT_FLAGS_VALUE );
     _PushToStack( pStackTop, void far *, pProcess->pEntryPoint );
 
     pProcess->pStackTop = pStackTop;
