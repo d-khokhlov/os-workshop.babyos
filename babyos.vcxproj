@@ -18,6 +18,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\debug\debug.h" />
+    <ClInclude Include="src\include\processes.h" />
     <ClInclude Include="src\process-manager\architecture-186.h" />
     <ClInclude Include="src\process-manager\architecture-x86-32.h" />
     <ClInclude Include="src\process-manager\architecture.h" />
@@ -35,6 +36,7 @@
     <ClInclude Include="src\process-manager\timer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\libraries\processes.c" />
     <ClCompile Include="src\process-manager\context.c" />
     <ClCompile Include="src\process-manager\interrupts.c" />
     <ClCompile Include="src\process-manager\memory.c" />
