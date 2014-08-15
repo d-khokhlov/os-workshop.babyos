@@ -45,9 +45,6 @@
     <ClInclude Include="src\process-manager\architecture-x86-32.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\process-manager\common.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\process-manager\context.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -82,6 +79,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\include\processes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

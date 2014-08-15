@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common.h"
+#include <common.h>
 
 // PIC - Programmable Interrupt Controller
 #define PIC1_PORT1 0x20
@@ -20,6 +20,7 @@
 #define INTERRUPT_TIMER INTERRUPT_IRQ0
 #define INTERRUPT_KEYBOARD INTERRUPT_IRQ1
 
+// todo: возможно вынести это в syscalls.h
 #define INTERRUPT_SYSCALLS 0x90
 
 // Нужно только для EndInterrupt
@@ -27,6 +28,8 @@
 #define PIC2
 
 // pic: PIC1 или PIC2
+// todo: возможно переименовать в EndIrqHandling, а также использовать везде
+// для аппаратных прерываний термин IRQ вместо interrupt.
 #define EndInterrupt( pic ) \
     asm{ push ax }\
     asm{ mov al, PIC_OCW2_NONSPECIFIC_EOI }\

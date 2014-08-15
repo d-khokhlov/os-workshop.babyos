@@ -1,4 +1,4 @@
-#include "common.h"
+#include <common.h>
 #include "process.h"
 
 extern ProcessId ProcessId_GetNew()
