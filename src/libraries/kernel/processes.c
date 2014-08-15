@@ -2,7 +2,7 @@
 #include <processes.h>
 
 // todo: сделать так, чтобы не нужно было использовать такой путь
-#include "../process-manager/syscalls.h"
+#include "../../process-manager/syscalls.h"
 
 // hack: Используются особенности соглашения о вызове Open Watcom C.
 // Параметры по возможности передаются в регистрах в таком порядке:

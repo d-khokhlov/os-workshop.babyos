@@ -119,7 +119,7 @@
     <ClCompile Include="src\process-manager\timer.c">
       <Filter>C Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\libraries\processes.c">
+    <ClCompile Include="src\libraries\kernel\processes.c">
       <Filter>C Files</Filter>
     </ClCompile>
   </ItemGroup>

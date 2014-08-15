@@ -6,8 +6,7 @@
 
 typedef void( *_PSyscallHandler )( );
 
-#define _SYSCALLS_COUNT SyscallId_Max
-static _PSyscallHandler _pSyscallHandlers[ _SYSCALLS_COUNT ];
+static _PSyscallHandler _pSyscallHandlers[ SYSCALLS_COUNT ];
 
 static void naked _SyscallInterruptHandler()
 {
