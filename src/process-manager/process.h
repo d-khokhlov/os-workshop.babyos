@@ -31,8 +31,8 @@ typedef struct Process
     void far *pEntryPoint;
     void far *pDataSegment;
     void far *pStackTop;
-    ProcessParameters parameters;
     int parametersCount;
+    ProcessParameters parameters;
     struct Process *pNext;
 } Process;
 extern void Process_Init( Process *pProcess );

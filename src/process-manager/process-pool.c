@@ -9,6 +9,11 @@ typedef struct _ProcessPool
     ProcessStorage storage;
     ProcessQueue usedQueue;
     ProcessQueue emptyQueue;
+    // В нормальном состоянии, если в системе есть активный процесс, то это
+    // первый процесс в очереди. Однако при поиске другого процесса для
+    // активации, активный процесс помещается в конец очереди и в общем случае,
+    // может оказаться где-то в ее середине. Чтобы всегда иметь быстрый доступ
+    // к активному процессу, храним отдельный указатель на него.
     Process *pActiveProcess;
 } _ProcessPool;
 
@@ -73,4 +78,20 @@ extern Process *ProcessPool_CreateProcess()
         ProcessQueue_Enqueue( &_pool.usedQueue, pProcess );
     }
     return pProcess;
+}
+
+extern bool ProcessPool_DestroyActiveProcess()
+{
+    Process *pProcess;
+
+    if ( _pool.pActiveProcess == NULL ) {
+        return FALSE;
+    }
+
+    _pool.pActiveProcess = NULL;
+    pProcess = ProcessQueue_Dequeue( &_pool.usedQueue );
+    Process_Clear( pProcess );
+    ProcessQueue_Enqueue( &_pool.emptyQueue, pProcess );
+
+    return TRUE;
 }

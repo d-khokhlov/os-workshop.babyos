@@ -6,8 +6,8 @@ extern void far * AllocateFarMemory( MemoryBlockSize size )
 {
     unsigned int sizeInParagraphs;
 
-    // Íåëüçÿ îáúÿâèòü êàê Segment (unsigned short), ò.ê. _dos_allocmem
-    // ïðèíèìàåò àäðåñ èìåííî unsigned int-à.
+    // ÐÐµÐ»ÑŒÐ·Ñ Ð¾Ð±ÑŠÑÐ²Ð¸Ñ‚ÑŒ ÐºÐ°Ðº Segment (unsigned short), Ñ‚.Ðº. _dos_allocmem
+    // Ð¿Ñ€Ð¸Ð½Ð¸Ð¼Ð°ÐµÑ‚ Ð°Ð´Ñ€ÐµÑ Ð¸Ð¼ÐµÐ½Ð½Ð¾ unsigned int-Ð°.
     unsigned int segment;
 
     sizeInParagraphs = size >> 4;
@@ -21,12 +21,31 @@ extern void far * AllocateFarMemory( MemoryBlockSize size )
     return MakeFp( segment, 0 );
 }
 
+extern void FreeFarMemory( void far *pBlock )
+{
+    _dos_freemem( (unsigned int) GetFpSegment( pBlock ) );
+}
+
 extern Segment GetCurrentCodeSegment()
 {
-    // hack: èíèöèàëèçàöèÿ äîáàâëåíà òîëüêî ÷òîáû èçáåæàòü warning-à êîìïèëÿòîðà
+    // hack: Ð¸Ð½Ð¸Ñ†Ð¸Ð°Ð»Ð¸Ð·Ð°Ñ†Ð¸Ñ Ð´Ð¾Ð±Ð°Ð²Ð»ÐµÐ½Ð° Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ñ‡Ñ‚Ð¾Ð±Ñ‹ Ð¸Ð·Ð±ÐµÐ¶Ð°Ñ‚ÑŒ warning-Ð° ÐºÐ¾Ð¼Ð¿Ð¸Ð»ÑÑ‚Ð¾Ñ€Ð°
     SegmentRegister csRegister = 0;
     asm {
         mov csRegister, cs
     }
     return csRegister;
+}
+
+extern bool CopyFarStringToNear( char far *source, char *destination,
+    int destinationCapacity )
+{
+    for ( ; destinationCapacity > 0; destinationCapacity-- ) {
+        *destination = *source;
+        if ( *destination == 0 ) {
+            return TRUE;
+        }
+        destination++;
+        source++;
+    }
+    return FALSE;
 }

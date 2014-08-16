@@ -29,6 +29,7 @@ static void _LoadProcessContext()
     Process *pActiveProcess = ProcessPool_GetActiveProcess();
     if ( pActiveProcess != NULL ) {
         _pProcessStackTop = pActiveProcess->pStackTop;
+        pActiveProcess->pStackTop = NULL;
     }
 }
 
@@ -85,7 +86,7 @@ extern void InitProcessContext( Process *pProcess )
     pStackTop = MakeFp( GetFpSegment( pStackTop ),
         GetFpOffset( pStackTop ) & (Offset) ( ~1 ) );
 
-    for ( i = ProcessParameters_MaxCount - 1; i >= 0; i-- ) {
+    for ( i = pProcess->parametersCount - 1; i >= 0; i-- ) {
         _PushToStack( pStackTop, int, pProcess->parameters[ i ] );
     }
 
