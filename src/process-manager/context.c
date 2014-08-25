@@ -112,5 +112,11 @@ extern void InitProcessContext( Process *pProcess )
 
 extern void InitKernelContext()
 {
-    _pKernelStackTop = AllocateFarMemory( _KERNEL_STACK_SIZE );
+    void far *pStack = AllocateFarMemory( _KERNEL_STACK_SIZE );
+
+    // Вершина стека ядра изначально указывает на следующий за выделенным
+    // сегментом байт. Однако это не приведет к ошибкам, т.к. первой операцией
+    // со стеком будет push, которая первым делом сместит вершину на размер
+    // записываемых данных.
+    _pKernelStackTop = MakeFp( GetFpSegment( pStack ), _KERNEL_STACK_SIZE );
 }
