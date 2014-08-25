@@ -13,12 +13,22 @@ typedef void( *_PSyscallHandler )( );
 
 static _PSyscallHandler _pSyscallHandlers[ SYSCALLS_COUNT ];
 
+// hack: Порядок передачи аргументов в регистрах и возврата значения основан на
+// Open Watcom C:
+//     аргументы в ax, dx, bx, cx;
+//     результат в ax.
+// Дополнительно в регистре di передается идентификатор системного вызова.
+// Подробное описание см. в "Open Watcom C/C++ User's Guide",
+// раздел "16-bit Assembly Language Considerations",
+// подраздел "16-bit: Calling Conventions for Non-80x87 Applications".
+
 static void naked _SyscallInterruptHandler()
 {
     asm {
         call SwitchContextToKernel
-        // todo: Реализовать вызов реального обработчика и передача параметров.
-        // Может быть реализовать эту функцию на C с модификатором interrupt?
+        // todo: убрать зависимость от размера указателя
+        shl di, 1
+        call _pSyscallHandlers[ di ]
         call SwitchContextToProcess
         iret
     }
@@ -44,15 +54,6 @@ static void _SyscallHandler_TerminateProcess()
 {
     TerminateProcess();
 }
-
-// hack: Порядок передачи аргументов в регистрах и возврата значения основан на
-// Open Watcom C:
-//     аргументы в ax, dx, bx, cx;
-//     результат в ax.
-// Дополнительно в регистре di передается идентификатор системного вызова.
-// Подробное описание см. в "Open Watcom C/C++ User's Guide",
-// раздел "16-bit Assembly Language Considerations",
-// подраздел "16-bit: Calling Conventions for Non-80x87 Applications".
 
 extern void InitSyscalls()
 {
