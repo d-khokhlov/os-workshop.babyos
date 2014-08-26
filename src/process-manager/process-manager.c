@@ -61,19 +61,25 @@ extern void TerminateProcess()
 // todo: вынести в загрузчик/инициализатор
 extern void main()
 {
-    char c;
     int i;
 
     InitKernelContext();
     ProcessPool_Init();
-    //InitSyscalls();
+    InitSyscalls();
 
     for ( i = 0; i < 3; i++ ) {
-        CreateProcess( "randstr", 24 - i );
+        //CreateProcess( "randstr", 24 - i );
     }
-    CreateProcess( "worm", 0 );
+    //CreateProcess( "worm", 0 );
+    CreateProcess( "hw", 0 );
 
     InitTimer();
 
-    read( STDIN_FILENO, &c, 1 );
+    // hack: В дальнейшем надо сделать или отдельный процесс, который будет
+    // выключать процессор (аналог "Бездействия системы" в Windows), или делать
+    // это в пуле процессов или где-то еще, когда нет ни одного готового процесса.
+    asm {
+        sti
+        hlt
+    }
 }
