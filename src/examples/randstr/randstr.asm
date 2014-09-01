@@ -35,6 +35,7 @@ _Start:
 
                 loop    @beginLine
 
-                retf
+                mov     di, 1
+                int     0x90
 
                 end     _Start

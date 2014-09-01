@@ -109,9 +109,9 @@ VComponent
 24
 WRect
 208
-161
+151
 5680
-4247
+4238
 0
 0
 25
@@ -120,4 +120,4 @@ WFileName
 targets\kernel.tgt
 0
 1
-11
+17

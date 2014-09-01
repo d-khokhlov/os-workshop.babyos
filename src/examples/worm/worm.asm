@@ -151,7 +151,8 @@ _Start:
                 cmp     ax, FOOD_POINT
                 je      @eatFood
 
-                retf
+                mov     di, 1
+                int     0x90
 
 @eatFood:
                 call    _CreateFood
