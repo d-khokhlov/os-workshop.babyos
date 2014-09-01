@@ -65,12 +65,38 @@ _Start:
                 ;mov     ah, 0x86
                 ;int     0x15
 
+                ; hack: Похоже, обработчик прерывания 0x16 как-то конфликтует с
+                ; с ядром, когда оно обрабатывает прерывание от таймера во время
+                ; работы этого обработчика. Поэтому запрещаем прерывание от
+                ; таймера на время вызова прерывания 0x16.
+                in      al, 0x21
+                or      al, 00000001b
+                out     0x21, al
+
                 mov     ah, 1
                 int     0x16
+
+                ; hack: см. выше
+                pushf
+                in      al, 0x21
+                and     al, 11111110b
+                out     0x21, al
+                popf
+
                 jz      @checkBodyGrowing
+
+                ; hack: см. выше
+                in      al, 0x21
+                or      al, 00000001b
+                out     0x21, al
 
                 mov     ah, 0
                 int     0x16
+
+                ; hack: см. выше
+                in      al, 0x21
+                and     al, 11111110b
+                out     0x21, al
 
 @checkUpPressed:
                 cmp     ah, 0x48
