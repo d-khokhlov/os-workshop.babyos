@@ -11,10 +11,10 @@
 // hack: Ассемблер, встроенный в Watcom C, не умеет использовать члены структур
 // из C. Поэтому в качестве типа этих двух переменных не получаеся использовать
 // какую-нибудь абстрактную структуру для хранения контекста.
-static void far *_pKernelStackTop;
-
 // todo: Единый стек ядра, сбрасываемый при каждом переходе в ядро,
 // не обеспечивает повторной входимости.
+static void far *_pKernelStackTop;
+
 static void far *_pProcessStackTop;
 
 static void *_pReturnPoint;
@@ -45,6 +45,12 @@ extern void naked SwitchContextToKernel()
         push ds
         push es
 
+        // DEBUG
+        //cli
+        in al, 0x21
+        or al, 00000001b
+        out 0x21, al
+
         // hack: Используется факт компиляции системы в формат COM (код и данные
         // в одном сегменте).
         mov ax, cs
@@ -69,6 +75,12 @@ extern void naked SwitchContextToProcess()
 
         mov ss, word ptr _pProcessStackTop + 2
         mov sp, word ptr _pProcessStackTop
+
+        // DEBUG
+        //sti
+        in al, 0x21
+        and al, 11111110b
+        out 0x21, al
 
         pop es
         pop ds
