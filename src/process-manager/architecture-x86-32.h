@@ -3,6 +3,7 @@
 #define COMMON_REGISTERS_COUNT 8
 #define POPA_STACK_POINTER_INDEX 3
 
+typedef unsigned char Byte;
 typedef unsigned int MachineWord;
 typedef unsigned short SegmentSelector;
 

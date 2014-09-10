@@ -4,6 +4,7 @@
 #include "process-pool.h"
 #include "memory.h"
 #include "architecture.h"
+#include "interrupts.h"
 
 #define _DEFAULT_FLAGS_VALUE 0x7202
 #define _KERNEL_STACK_SIZE 2048
@@ -45,11 +46,16 @@ extern void naked SwitchContextToKernel()
         push ds
         push es
 
-        // DEBUG
-        //cli
-        in al, 0x21
-        or al, 00000001b
-        out 0x21, al
+        // hack: Ядро не повторно входимое, поэтому запрещаем все аппаратные
+        // прерывания, чтобы исключить повторный вход.
+        // В дальнейшем, когда не будут использоваться функции DOS, скорее всего
+        // можно будет делать простой cli или вообще ничего не далать, т.к. флаг
+        // IF сбрасывается при вызове обработчика аппаратного прерывания (однако
+        // мы входим в ядро не только по аппаратным прерываниям).
+        // Сейчас где-то внутри DOS функций (используются в некоторых системных
+        // вызовах) флаг IF устанавливается снова. Поэтому приходится запрещать
+        // прерывания на уровне контроллера прерываний.
+        call DisableIrqs
 
         // hack: Используется факт компиляции системы в формат COM (код и данные
         // в одном сегменте).
@@ -76,11 +82,9 @@ extern void naked SwitchContextToProcess()
         mov ss, word ptr _pProcessStackTop + 2
         mov sp, word ptr _pProcessStackTop
 
-        // DEBUG
-        //sti
-        in al, 0x21
-        and al, 11111110b
-        out 0x21, al
+        // Восстанавливаем разрешенные прерывания, т.к. с этого момента можно
+        // повторно входить в ядро (см. SwitchContextToKernel).
+        call RestoreIrqs
 
         pop es
         pop ds

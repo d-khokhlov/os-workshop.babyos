@@ -3,6 +3,8 @@
 #include "architecture.h"
 #include "memory.h"
 
+static Byte _savedIrqMask;
+
 // todo: Попробовать написать такую реализацию, которая не требовала бы
 // реализовывать для каждого обработчика функцию-обертку, переключающую
 // контекст и вызывающую EndInterrupt в конце (см. _TimerInterruptHandler).
@@ -26,4 +28,22 @@ extern void far * GetInterruptHandler( unsigned short number )
 {
     void far * far *ppVector = MakeFp( 0, number * 4 );
     return *ppVector;
+}
+
+extern void naked DisableIrqs()
+{
+    asm {
+        in al, PIC1_PORT2
+        mov _savedIrqMask, al
+        mov al, PIC_OCW1_DISABLE_ALL_IRQ
+        out PIC1_PORT2, al
+    }
+}
+
+extern void naked RestoreIrqs()
+{
+    asm {
+        mov al, _savedIrqMask
+        out PIC1_PORT2, al
+    }
 }

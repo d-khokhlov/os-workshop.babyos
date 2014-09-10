@@ -5,8 +5,9 @@
 // PIC - Programmable Interrupt Controller
 #define PIC1_PORT1 0x20
 #define PIC1_PORT2 0x21
-
 #define PIC1_INTERRUPT_BASE 0x08
+
+#define PIC_OCW1_DISABLE_ALL_IRQ 0xFF
 
 // EOI - End Of Interrupt
 #define PIC_OCW2_NONSPECIFIC_EOI 0x20
@@ -39,3 +40,5 @@
 
 extern void SetInterruptHandler( unsigned short interrupt, void *pHandler );
 extern void far * GetInterruptHandler( unsigned short interrupt );
+extern void DisableIrqs();
+extern void RestoreIrqs();
