@@ -20,6 +20,7 @@ extern Handle naked CreateProcess( char *pExecutablePath, int parameter )
         mov di, SyscallId_CreateProcess
         int INTERRUPT_SYSCALLS
         pop di
+        ret
     }
 }
 
@@ -30,5 +31,6 @@ extern void naked TerminateProcess()
         mov di, SyscallId_TerminateProcess
         int INTERRUPT_SYSCALLS
         pop di
+        ret
     }
 }

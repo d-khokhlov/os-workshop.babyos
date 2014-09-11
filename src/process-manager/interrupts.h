@@ -24,14 +24,12 @@
 // todo: возможно вынести это в syscalls.h
 #define INTERRUPT_SYSCALLS 0x90
 
-// Нужно только для EndInterrupt
+// Нужно только для ReturnFromIrqHandler
 #define PIC1
 #define PIC2
 
 // pic: PIC1 или PIC2
-// todo: возможно переименовать в EndIrqHandling, а также использовать везде
-// для аппаратных прерываний термин IRQ вместо interrupt.
-#define EndInterrupt( pic ) \
+#define ReturnFromIrqHandler( pic ) \
     asm{ push ax }\
     asm{ mov al, PIC_OCW2_NONSPECIFIC_EOI }\
     asm{ out pic ## _PORT1, al }\

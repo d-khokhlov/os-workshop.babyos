@@ -7,7 +7,8 @@ static Byte _savedIrqMask;
 
 // todo: Попробовать написать такую реализацию, которая не требовала бы
 // реализовывать для каждого обработчика функцию-обертку, переключающую
-// контекст и вызывающую EndInterrupt в конце (см. _TimerInterruptHandler).
+// контекст и вызывающую ReturnFromIrqHandler в конце (только для обработчиков
+// аппаратных прерываний, см. _TimerInterruptHandler).
 // T.е. сюда должен передаваться указатель на функцию, содержащую голую логику
 // обработки прерывания, все остальное должно добавляться само. (Посмотреть как
 // это сделано в MINIX.)
@@ -35,8 +36,13 @@ extern void naked DisableIrqs()
     asm {
         in al, PIC1_PORT2
         mov _savedIrqMask, al
-        mov al, PIC_OCW1_DISABLE_ALL_IRQ
+
+        // DEBUG
+        or al, 1
+        // mov al, PIC_OCW1_DISABLE_ALL_IRQ
+
         out PIC1_PORT2, al
+        ret
     }
 }
 
@@ -45,5 +51,6 @@ extern void naked RestoreIrqs()
     asm {
         mov al, _savedIrqMask
         out PIC1_PORT2, al
+        ret
     }
 }

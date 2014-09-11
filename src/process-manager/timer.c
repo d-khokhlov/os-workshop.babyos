@@ -31,7 +31,7 @@ static void naked _TimerInterruptHandler()
         call _HandleTimerInterrupt
         call SwitchContextToProcess
     }
-    EndInterrupt( PIC1 )
+    ReturnFromIrqHandler( PIC1 )
 }
 
 extern void InitTimer()

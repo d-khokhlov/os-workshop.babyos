@@ -11,8 +11,9 @@
 ;     символов рисования таблиц серым цветом на красном фоне).
 
                 .model tiny
-                .code
                 .186
+
+                .code
 
 POINT_SIZE      equ     2
 SCREEN_WIDTH    equ     80
