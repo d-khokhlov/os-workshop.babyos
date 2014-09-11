@@ -131,7 +131,7 @@ DEBUG_Pause:
 ;     ax, bx, cx, si
 _PrintRegisters:
                 mov     si, offset _registersTable
-                mov     cx, 13
+                mov     cx, _REGISTERS_COUNT
 
 @printRegister:
                 mov     bh, _REGISTERS_BACK_COLOR or _LABEL_FORE_COLOR
