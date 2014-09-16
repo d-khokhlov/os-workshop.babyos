@@ -4,7 +4,7 @@
 #include "process-pool.h"
 #include "memory.h"
 #include "architecture.h"
-#include "interrupts.h"
+#include "timer.h"
 
 #define _DEFAULT_FLAGS_VALUE 0x7202
 #define _KERNEL_STACK_SIZE 2048
@@ -46,8 +46,8 @@ extern void naked SwitchContextToKernel()
         push ds
         push es
 
-        // hack: Ядро не повторно входимое, поэтому запрещаем все аппаратные
-        // прерывания, чтобы исключить повторный вход.
+        // hack: Ядро не повторно входимое, поэтому отключаем таймер, чтобы
+        // исключить повторный вход.
         // В дальнейшем, когда не будут использоваться функции DOS, скорее всего
         // можно будет делать простой cli или вообще ничего не далать, т.к. флаг
         // IF сбрасывается при вызове обработчика аппаратного прерывания (однако
@@ -55,7 +55,7 @@ extern void naked SwitchContextToKernel()
         // Сейчас где-то внутри DOS функций (используются в некоторых системных
         // вызовах) флаг IF устанавливается снова. Поэтому приходится запрещать
         // прерывания на уровне контроллера прерываний.
-        call DisableIrqs
+        call DisableTimer
 
         // hack: Используется факт компиляции системы в формат COM (код и данные
         // в одном сегменте).
@@ -82,9 +82,9 @@ extern void naked SwitchContextToProcess()
         mov ss, word ptr _pProcessStackTop + 2
         mov sp, word ptr _pProcessStackTop
 
-        // Восстанавливаем разрешенные прерывания, т.к. с этого момента можно
-        // повторно входить в ядро (см. SwitchContextToKernel).
-        call RestoreIrqs
+        // Включаем таймер, т.к. с этого момента можно повторно входить в ядро
+        // (см. SwitchContextToKernel).
+        call EnableTimer
 
         pop es
         pop ds

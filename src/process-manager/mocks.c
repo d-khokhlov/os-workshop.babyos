@@ -12,7 +12,12 @@ extern MemoryBlockSize FarReadFromFile( int handle, void far *pBuffer,
     return actualCount;
 }
 
-extern unsigned int OutByteToPort( unsigned int port, unsigned int value )
+extern unsigned char ReadByteFromPort( unsigned int port )
 {
-    return outp( port, value );
+    return inp( port );
+}
+
+extern void WriteByteToPort( unsigned int port, unsigned char value )
+{
+    outp( port, value );
 }

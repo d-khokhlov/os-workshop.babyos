@@ -16,7 +16,7 @@ _Start:
                 mov     di, 0
                 mov     ax, offset _path
                 mov     dx, 0
-                ;int     0x90
+                int     0x90
 
                 mov     di, 1
                 int     0x90

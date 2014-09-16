@@ -2,8 +2,16 @@
 #include "interrupts.h"
 #include "architecture.h"
 #include "memory.h"
+#include "mocks.h"
 
-static Byte _savedIrqMask;
+#ifdef interrupt
+#undef interrupt
+#endif
+
+#define _PIC_BIT_OFFSET_IN_IRQ 3
+#define _CLEAR_PIC_IN_IRQ_MASK ( ( 1 << _PIC_BIT_OFFSET_IN_IRQ ) - 1 )
+
+static unsigned short _picsFirstPorts[] = { PIC1_PORT1, PIC2_PORT1 };
 
 // todo: Попробовать написать такую реализацию, которая не требовала бы
 // реализовывать для каждого обработчика функцию-обертку, переключающую
@@ -12,9 +20,9 @@ static Byte _savedIrqMask;
 // T.е. сюда должен передаваться указатель на функцию, содержащую голую логику
 // обработки прерывания, все остальное должно добавляться само. (Посмотреть как
 // это сделано в MINIX.)
-extern void SetInterruptHandler( unsigned short number, void *pHandler )
+extern void SetInterruptHandler( unsigned short interrupt, void *pHandler )
 {
-    void far * far *ppVector = MakeFp( 0, number * 4 );
+    void far * far *ppVector = MakeFp( 0, interrupt * FAR_POINTER_SIZE );
     asm {
         pushf
         cli
@@ -25,32 +33,24 @@ extern void SetInterruptHandler( unsigned short number, void *pHandler )
     }
 }
 
-extern void far * GetInterruptHandler( unsigned short number )
+extern void far * GetInterruptHandler( unsigned short interrupt )
 {
-    void far * far *ppVector = MakeFp( 0, number * 4 );
+    void far * far *ppVector = MakeFp( 0, interrupt * FAR_POINTER_SIZE );
     return *ppVector;
 }
 
-extern void naked DisableIrqs()
+extern void DisableIrq( unsigned char irq )
 {
-    asm {
-        in al, PIC1_PORT2
-        mov _savedIrqMask, al
-
-        // DEBUG
-        or al, 1
-        // mov al, PIC_OCW1_DISABLE_ALL_IRQ
-
-        out PIC1_PORT2, al
-        ret
-    }
+    unsigned short picPort = _picsFirstPorts[ irq >> _PIC_BIT_OFFSET_IN_IRQ ];
+    unsigned char disabledIrqMask = ReadByteFromPort( picPort );
+    disabledIrqMask |= 1 << ( irq & _CLEAR_PIC_IN_IRQ_MASK );
+    WriteByteToPort( picPort, disabledIrqMask );
 }
 
-extern void naked RestoreIrqs()
+extern void EnableIrq( unsigned char irq )
 {
-    asm {
-        mov al, _savedIrqMask
-        out PIC1_PORT2, al
-        ret
-    }
+    unsigned short picPort = _picsFirstPorts[ irq >> _PIC_BIT_OFFSET_IN_IRQ ];
+    unsigned char disabledIrqMask = ReadByteFromPort( picPort );
+    disabledIrqMask &= ~( 1 << ( irq & _CLEAR_PIC_IN_IRQ_MASK ) );
+    WriteByteToPort( picPort, disabledIrqMask );
 }

@@ -6,11 +6,15 @@
 #define PIC1_PORT1 0x20
 #define PIC1_PORT2 0x21
 #define PIC1_INTERRUPT_BASE 0x08
-
-#define PIC_OCW1_DISABLE_ALL_IRQ 0xFF
+#define PIC2_PORT1 0xA0
+#define PIC2_PORT2 0xA1
+#define PIC2_INTERRUPT_BASE 0x70
 
 // EOI - End Of Interrupt
 #define PIC_OCW2_NONSPECIFIC_EOI 0x20
+
+#define IRQ_TIMER 0
+#define IRQ_KEYBOARD 1
 
 // todo: Константы INTERRUPT_x можно объединить в перечисление и использовать
 // его в функциях в качестве типа параметра interrupt. Но тогда желательно
@@ -38,5 +42,5 @@
 
 extern void SetInterruptHandler( unsigned short interrupt, void *pHandler );
 extern void far * GetInterruptHandler( unsigned short interrupt );
-extern void DisableIrqs();
-extern void RestoreIrqs();
+extern void DisableIrq( unsigned char irq );
+extern void EnableIrq( unsigned char irq );

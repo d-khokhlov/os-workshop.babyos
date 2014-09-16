@@ -36,9 +36,19 @@ static void naked _TimerInterruptHandler()
 
 extern void InitTimer()
 {
-    OutByteToPort( _TIMER1_CONTROL_PORT,
+    WriteByteToPort( _TIMER1_CONTROL_PORT,
         _TIMER_CHOOSE_CHANNEL0 | _TIMER_CHANNEL_MODE );
-    OutByteToPort( _TIMER1_CHANNEL0_PORT, _TIMER_COUNTER_START_VALUE & 0xFF );
-    OutByteToPort( _TIMER1_CHANNEL0_PORT, _TIMER_COUNTER_START_VALUE >> 8 );
+    WriteByteToPort( _TIMER1_CHANNEL0_PORT, _TIMER_COUNTER_START_VALUE & 0xFF );
+    WriteByteToPort( _TIMER1_CHANNEL0_PORT, _TIMER_COUNTER_START_VALUE >> 8 );
     SetInterruptHandler( INTERRUPT_TIMER, &_TimerInterruptHandler );
+}
+
+extern void DisableTimer()
+{
+    DisableIrq( IRQ_TIMER );
+}
+
+extern void EnableTimer()
+{
+    EnableIrq( IRQ_TIMER );
 }

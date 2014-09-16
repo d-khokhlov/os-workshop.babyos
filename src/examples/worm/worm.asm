@@ -53,7 +53,7 @@ _Start:
                 mov     bp, START_BODY_SIZE - 1
 
 @mainCycle:
-                mov     dx, 0x0500
+                mov     dx, 0x0100
 @delayLoopOut:
                 mov     cx, 0xFFFF
 @delayLoopIn:
