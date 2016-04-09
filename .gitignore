@@ -16,3 +16,5 @@
 /*.sdf
 /[Dd]ebug/
 /[Rr]elease/
+/.vs/
+/*.VC.opendb
