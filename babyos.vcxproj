@@ -36,6 +36,7 @@
     <ClInclude Include="src\process-manager\timer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\cpuid\cpuid.c" />
     <ClCompile Include="src\libraries\kernel\processes.c" />
     <ClCompile Include="src\process-manager\context.c" />
     <ClCompile Include="src\process-manager\interrupts.c" />

@@ -122,5 +122,8 @@
     <ClCompile Include="src\libraries\kernel\processes.c">
       <Filter>C Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\cpuid\cpuid.c">
+      <Filter>C Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
