@@ -1,3 +1,3 @@
 @echo off
 
-td pm.com
+td cpuid.com

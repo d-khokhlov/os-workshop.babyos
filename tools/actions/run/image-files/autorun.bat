@@ -1,3 +1,3 @@
 @echo off
 
-pm.com
+cpuid.com
