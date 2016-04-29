@@ -67,16 +67,22 @@ extern void main()
     if ( _CpuidIsSupported() ) {
 
         CpuidLeaf *pLeaf = malloc( sizeof( CpuidLeaf ) );
+        unsigned long int maxBasicLeaf, maxExtendedLeaf;
         char vendorId[ 13 ];
         unsigned long int *pVendorIdComponent = ( unsigned long int * ) vendorId;
 
         _GetCpuidLeaf( 0x00, pLeaf );
-        printf( "Max basic leaf: 0x%lX\n", pLeaf->eax );
+        maxBasicLeaf = pLeaf->eax;
+        printf( "Max basic leaf: 0x%lX\n", maxBasicLeaf );
         *pVendorIdComponent = pLeaf->ebx;
         *( pVendorIdComponent + 1 ) = pLeaf->edx;
         *( pVendorIdComponent + 2 ) = pLeaf->ecx;
         vendorId[ 12 ] = 0;
         printf( "Vendor identification string: %s\n", vendorId );
+
+        _GetCpuidLeaf( 0x80000000, pLeaf );
+        maxExtendedLeaf = pLeaf->eax;
+        printf( "Max extended leaf: 0x%lX\n", maxExtendedLeaf );
 
         free( pLeaf );
 
