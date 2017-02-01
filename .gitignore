@@ -6,9 +6,6 @@
 # Automation tools
 /tools/images/
 
-# Sublime Text
-/*.sublime-workspace
-
 # Visual Studio
 /*.suo
 /*.user
@@ -19,3 +16,7 @@
 /.vs/
 /*.VC.opendb
 /*.VC.db
+
+# CLion
+/.idea/workspace.xml
+/cmake-build-*/
