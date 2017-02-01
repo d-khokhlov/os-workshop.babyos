@@ -166,63 +166,80 @@ static bool _PrintCpuidFeatures( unsigned long int flags, char *features[] )
 
 extern void main()
 {
-    if ( _CpuidIsSupported() ) {
+    _CpuidLeaf leaf;
+    unsigned long int maxBasicLeaf, maxExtendedLeaf, featuresEdx;
+    char vendorId[ 13 ];
+    unsigned long int *pVendorIdComponent = (unsigned long int *)vendorId;
 
-        _CpuidLeaf leaf;
-        unsigned long int maxBasicLeaf, maxExtendedLeaf;
-
-        char vendorId[ 13 ];
-        unsigned long int *pVendorIdComponent = ( unsigned long int * ) vendorId;
-        _GetCpuidLeaf( 0x00, &leaf );
-        maxBasicLeaf = leaf.eax;
-        printf( "Max basic leaf: 0x%02lX\n", maxBasicLeaf );
-        *pVendorIdComponent = leaf.ebx;
-        *( pVendorIdComponent + 1 ) = leaf.edx;
-        *( pVendorIdComponent + 2 ) = leaf.ecx;
-        vendorId[ 12 ] = 0;
-        printf( "Vendor identification string: %s\n", vendorId );
-
-        _GetCpuidLeaf( 0x80000000, &leaf );
-        maxExtendedLeaf = leaf.eax;
-        printf( "Max extended leaf: 0x%lX\n", maxExtendedLeaf );
-
-        if ( 0x01 <= maxBasicLeaf ) {
-            _CpuidVersionInformation *pVersionInfo;
-            unsigned int family, model;
-            _Cpuid01Ebx *pEbxInfo;
-
-            _GetCpuidLeaf( 0x01, &leaf );
-            pVersionInfo = ( _CpuidVersionInformation * ) &( leaf.eax );
-            family = pVersionInfo->family;
-            model = pVersionInfo->model;
-            if ( family == 0x06 || family == 0x0F ) {
-                model += (unsigned int)pVersionInfo->extendedModel << 4;
-            }
-            if ( family == 0x0F ) {
-                family += (unsigned int)pVersionInfo->extendedFamily;
-            }
-            pEbxInfo = ( _Cpuid01Ebx * )&( leaf.ebx );
-
-            printf( "Type: 0x%02X\n", (unsigned int)pVersionInfo->type );
-            printf( "Family: 0x%02X\n", family );
-            printf( "Model: 0x%02X\n", model );
-            printf( "Stepping: 0x%02X\n", (unsigned int)pVersionInfo->stepping );
-            printf( "Brand string index: %hhu\n", pEbxInfo->brandIndex );
-            printf( "Cache line size: %u\n", (unsigned int)pEbxInfo->cacheLineSize * 8 );
-            if ( leaf.edx & ( 1ul << 28 ) ) {
-                printf( "Max logical processors IDs: %hhu\n", pEbxInfo->maxLogicalProcessorsIds );
-            }
-            printf( "Initial local APIC ID: %hhu\n", pEbxInfo->localApicId );
-            printf( "Features: " );
-            if ( _PrintCpuidFeatures( leaf.edx, _cpuidEdxFeatures ) ) {
-                printf( ", " );
-            }
-            _PrintCpuidFeatures( leaf.ecx, _cpuidEcxFeatures );
-            printf( "\n" );
-        }
-    } else {
+    if ( !_CpuidIsSupported() ) {
         printf( "CPUID is not supported\n" );
+        return;
     }
 
-    printf( "\n" );
+    _GetCpuidLeaf( 0x00, &leaf );
+    maxBasicLeaf = leaf.eax;
+    printf( "Max basic leaf: 0x%02lX\n", maxBasicLeaf );
+    *pVendorIdComponent = leaf.ebx;
+    *( pVendorIdComponent + 1 ) = leaf.edx;
+    *( pVendorIdComponent + 2 ) = leaf.ecx;
+    vendorId[ 12 ] = 0;
+    printf( "Vendor identification string: %s\n", vendorId );
+
+    _GetCpuidLeaf( 0x80000000, &leaf );
+    maxExtendedLeaf = leaf.eax;
+    printf( "Max extended leaf: 0x%lX\n", maxExtendedLeaf );
+
+    if ( 0x01 <= maxBasicLeaf ) {
+        _CpuidVersionInformation *pVersionInfo;
+        unsigned int family, model;
+        _Cpuid01Ebx *pEbxInfo;
+
+        _GetCpuidLeaf( 0x01, &leaf );
+        pVersionInfo = (_CpuidVersionInformation *) &( leaf.eax );
+        family = pVersionInfo->family;
+        model = pVersionInfo->model;
+        if ( family == 0x06 || family == 0x0F ) {
+            model += (unsigned int)pVersionInfo->extendedModel << 4;
+        }
+        if ( family == 0x0F ) {
+            family += (unsigned int)pVersionInfo->extendedFamily;
+        }
+        pEbxInfo = (_Cpuid01Ebx *) &( leaf.ebx );
+
+        printf( "Type: 0x%02X\n", (unsigned int)pVersionInfo->type );
+        printf( "Family: 0x%02X\n", family );
+        printf( "Model: 0x%02X\n", model );
+        printf( "Stepping: 0x%02X\n", (unsigned int)pVersionInfo->stepping );
+        printf( "Brand string index: %hhu\n", pEbxInfo->brandIndex );
+        printf( "Cache line size: %u\n", (unsigned int)pEbxInfo->cacheLineSize * 8 );
+        if ( leaf.edx & ( 1ul << 28 ) ) {
+            printf( "Max logical processors IDs: %hhu\n", pEbxInfo->maxLogicalProcessorsIds );
+        }
+        printf( "Initial local APIC ID: %hhu\n", pEbxInfo->localApicId );
+        printf( "Features: " );
+        if ( _PrintCpuidFeatures( leaf.edx, _cpuidEdxFeatures ) ) {
+            printf( ", " );
+        }
+        _PrintCpuidFeatures( leaf.ecx, _cpuidEcxFeatures );
+        printf( "\n" );
+        featuresEdx = leaf.edx;
+    }
+
+    if ( 0x02 <= maxBasicLeaf ) {
+        _GetCpuidLeaf( 0x02, &leaf );
+        printf( "TLB/cache/prefetch info:\n" );
+        printf( "    EAX = 0x%08X\n", leaf.eax );
+        printf( "    EBX = 0x%08X\n", leaf.ebx );
+        printf( "    ECX = 0x%08X\n", leaf.ecx );
+        printf( "    EDX = 0x%08X\n", leaf.edx );
+    }
+
+    if ( 0x03 <= maxBasicLeaf ) {
+        if ( featuresEdx & ( 1ul << 18 ) ) {
+            _GetCpuidLeaf( 0x03, &leaf );
+            printf( "Bits 0-64 of Processor serial number: 0x%08X%08X\n", leaf.edx, leaf.ecx );
+        } else {
+            printf( "Processor serial number is not supported\n" );
+        }
+    }
 }
